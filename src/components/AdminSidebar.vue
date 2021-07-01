@@ -26,57 +26,57 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Статистика</p>
+              <router-link to="/">Статистика</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Баннеры/Слайдеры</p>
+              <router-link to="/pagebanners">Баннеры/Слайдеры</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Фильмы</p>
+              <router-link to="/pagefilms">Фильмы</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Кинотеатры</p>
+              <router-link to="/pagecinemas">Кинотеатры</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Новости</p>
+              <router-link to="/pagenews">Новости</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Акции</p>
+              <router-link to="/pagepromo">Акции</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Страницы</p>
+              <router-link to="/pagepages">Страницы</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Пользователи</p>
+              <router-link to="/pageusers">Пользователи</router-link>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Рассылка</p>
+              <router-link to="/pagenewsletter">Рассылка</router-link>
             </a>
           </li>
         </ul>

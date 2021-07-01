@@ -2,7 +2,6 @@
   <div id="app">
     <div class="wrapper">
       <AdminHeader />
-
       <AdminSidebar />
       <AdminContent />
     </div>

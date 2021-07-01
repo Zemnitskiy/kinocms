@@ -1,16 +1,11 @@
 <template>
   <div class="content-wrapper">
-    <Banners />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Banners from "./PageBanners.vue";
-
 export default {
   name: "AdminContent",
-  components: {
-    Banners,
-  },
 };
 </script>
