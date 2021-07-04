@@ -272,8 +272,8 @@ export default {
     addNewsAndPromoImg() {
       const currentNewsAndPromoImg = {
         id: Math.random().toString(),
-        url: "https://google.com",
-        text: "text",
+        url: "",
+        text: "",
       };
       if (this.newsAndPromoImgs.length < 5) {
         this.newsAndPromoImgs.push(currentNewsAndPromoImg);
