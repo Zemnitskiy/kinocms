@@ -21,9 +21,9 @@ export default {
       );
     },
   },
-  state: {
-    topBannerImgs: [],
-  },
+  // state: {
+  //   topBannerImgs: [],
+  // },
   getters: {
     allTopBannersImg(state) {
       return state.topBannerImgs;

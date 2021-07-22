@@ -45,13 +45,17 @@
               </button>
             </div>
             <div class="col-md-10">
-              <div class="row" v-if="allTopBannersImg.length">
+              <div class="row" v-if="topBannerImgs.length">
                 <div
                   class="card col-lg-2 col-md-2 col-sm-6 mr-2 ml-2"
-                  v-for="topBannerImg in allTopBannersImg"
+                  v-for="topBannerImg in topBannerImgs"
                   :key="topBannerImg.id"
                 >
-                  <TopBannerImg />
+                  <TopBannerImg
+                    @remove="deleteTopBannerImg(topBannerImg)"
+                    :inputUrl.sync="topBannerImg.inputUrl"
+                    :inputText.sync="topBannerImg.inputText"
+                  />
                 </div>
                 <!-- /.card -->
               </div>
@@ -199,8 +203,8 @@
                   :key="newsAndPromoImg.id"
                 >
                   <NewsAndPromoImg
-                    :newsAndPromoImgs="newsAndPromoImgs"
                     @remove="deleteNewsAndPromoImg(newsAndPromoImg)"
+                    :inputUrl.sync="newsAndPromoImg.inputUrl"
                   />
                 </div>
                 <!-- /.card -->
@@ -251,7 +255,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import TopBannerImg from "../TopBannerImg";
 import NewsAndPromoImg from "../NewsAndPromoImg";
 
@@ -263,17 +266,27 @@ export default {
   name: "PageBanners",
   data() {
     return {
+      topBannerImgs: [],
       newsAndPromoImgs: [],
     };
   },
-  computed: mapGetters(["allTopBannersImg"]),
   methods: {
-    ...mapActions(["addTopBannerImg"]),
+    addTopBannerImg() {
+      const currenttopBannerImg = {
+        id: Math.random().toString(),
+        inputUrl: null,
+        inputText: null,
+      };
+      if (this.topBannerImgs.length < 5) {
+        this.topBannerImgs.push(currenttopBannerImg);
+      } else {
+        alert(`Добавлено максимальное количество баннеров!`);
+      }
+    },
     addNewsAndPromoImg() {
       const currentNewsAndPromoImg = {
         id: Math.random().toString(),
-        url: "",
-        text: "",
+        inputUrl: null,
       };
       if (this.newsAndPromoImgs.length < 5) {
         this.newsAndPromoImgs.push(currentNewsAndPromoImg);
@@ -284,6 +297,11 @@ export default {
     deleteNewsAndPromoImg(newsAndPromoImg) {
       this.newsAndPromoImgs = this.newsAndPromoImgs.filter(
         (banner) => banner.id !== newsAndPromoImg.id
+      );
+    },
+    deleteTopBannerImg(topBannerImg) {
+      this.topBannerImgs = this.topBannerImgs.filter(
+        (banner) => banner.id !== topBannerImg.id
       );
     },
   },

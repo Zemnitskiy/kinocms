@@ -3,7 +3,7 @@
     <div class="card-header" style="border-bottom: none">
       <div class="card-tools">
         <!-- Remove Button -->
-        <button type="button" class="btn btn-tool" @click="deleteTopBannerImg">
+        <button type="button" class="btn btn-tool" @click="removeTopBannerImg">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -37,7 +37,8 @@
               class="form-control"
               id="inputEmail3"
               placeholder="URL"
-              v-model="topBannerImgUrl"
+              v-model="updatedInputUrl"
+              @input="updateUrl"
             />
           </div>
         </div>
@@ -54,7 +55,8 @@
               class="form-control"
               id="inputPassword3"
               placeholder="Текст"
-              v-model="topBannerImgText"
+              v-model="updatedInputText"
+              @input="updateText"
             />
           </div>
         </div>
@@ -65,19 +67,32 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
+  props: {
+    inputUrl: {
+      type: String,
+    },
+    inputText: {
+      type: String,
+    },
+  },
   data() {
     return {
-      topBannerImgUrl: "",
-      topBannerImgText: "",
-      id: Math.random().toString(),
+      updatedInputUrl: this.inputUrl,
+      updatedInputText: this.inputText,
     };
   },
   name: "TopBannerImg",
   methods: {
-    ...mapActions(["deleteTopBannerImg"]),
+    removeTopBannerImg: function () {
+      this.$emit("remove");
+    },
+    updateUrl: function () {
+      this.$emit("update:inputUrl", this.updatedInputUrl);
+    },
+    updateText: function () {
+      this.$emit("update:inputText", this.updatedInputText);
+    },
   },
 };
 </script>

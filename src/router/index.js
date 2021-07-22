@@ -1,14 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import PageStats from "@/components/pages/PageStats.vue";
-import PageBanners from "@/components/pages/PageBanners.vue";
-import PageCinemas from "@/components/pages/PageCinemas.vue";
-import PageFilms from "@/components/pages/PageFilms.vue";
-import PageNews from "@/components/pages/PageNews.vue";
-import PageNewsletter from "@/components/pages/PageNewsletter.vue";
-import PagePages from "@/components/pages/PagePages.vue";
-import PagePromo from "@/components/pages/PagePromo.vue";
-import PageUsers from "@/components/pages/PageUsers.vue";
 
 Vue.use(VueRouter);
 
@@ -16,47 +7,47 @@ const routes = [
   {
     path: "/",
     name: "PageStats",
-    component: PageStats,
+    component: () => import("@/components/pages/PageStats.vue"),
   },
   {
     path: "/pagebanners",
     name: "Pagebanners",
-    component: PageBanners,
+    component: () => import("@/components/pages/PageBanners.vue"),
   },
   {
     path: "/pagecinemas",
     name: "Pageinemas",
-    component: PageCinemas,
+    component: () => import("@/components/pages/PageCinemas.vue"),
   },
   {
     path: "/pagefilms",
     name: "Pagefilms",
-    component: PageFilms,
+    component: () => import("@/components/pages/PageFilms.vue"),
   },
   {
     path: "/pagenews",
     name: "Pagenews",
-    component: PageNews,
+    component: () => import("@/components/pages/PageNews.vue"),
   },
   {
     path: "/pagenewsletter",
     name: "Pagenewsletter",
-    component: PageNewsletter,
+    component: () => import("@/components/pages/PageNewsletter.vue"),
   },
   {
     path: "/pagepages",
     name: "Pagepages",
-    component: PagePages,
+    component: () => import("@/components/pages/PagePages.vue"),
   },
   {
     path: "/pagepromo",
     name: "Pagepromo",
-    component: PagePromo,
+    component: () => import("@/components/pages/PagePromo.vue"),
   },
   {
     path: "/pageusers",
     name: "PageUsers",
-    component: PageUsers,
+    component: () => import("@/components/pages/PageUsers.vue"),
   },
 ];
 

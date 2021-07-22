@@ -41,6 +41,8 @@
               class="form-control"
               id="inputEmail3"
               placeholder="URL"
+              v-model="updatedInputUrl"
+              @input="updateUrl"
             />
           </div>
         </div>
@@ -53,12 +55,22 @@
 <script>
 export default {
   props: {
-    newsAndPromoImgs: Array,
+    inputUrl: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      updatedInputUrl: this.inputUrl,
+    };
   },
   name: "NewsAndPromoImg",
   methods: {
     removenewsAndPromoImg: function () {
-      this.$emit("remove", this.newsAndPromoImg);
+      this.$emit("remove");
+    },
+    updateUrl: function () {
+      this.$emit("update:inputUrl", this.updatedInputUrl);
     },
   },
 };
