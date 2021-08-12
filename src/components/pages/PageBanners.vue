@@ -55,6 +55,7 @@
                     @remove="deleteTopBannerImg(topBannerImg)"
                     :inputUrl.sync="topBannerImg.inputUrl"
                     :inputText.sync="topBannerImg.inputText"
+                    :image.sync="topBannerImg.image"
                   />
                 </div>
                 <!-- /.card -->
@@ -83,17 +84,28 @@
                 "
               >
                 <label for="" class="col-md-4">Скорость вращения</label>
-                <select name="" id="" class="form-control col-md-2">
-                  <option value="">1с</option>
-                  <option value="">2с</option>
-                  <option value="">3с</option>
-                  <option value="">4с</option>
-                  <option value="">5с</option>
+                <select
+                  name=""
+                  id=""
+                  class="form-control col-md-2"
+                  v-model="topBannerSpeed"
+                >
+                  <option value="1" label="1 с"></option>
+                  <option value="2" label="2 с"></option>
+                  <option value="3" label="3 с"></option>
+                  <option value="4" label="4 с"></option>
+                  <option value="5" label="5 с"></option>
                 </select>
               </div>
             </div>
             <div class="col-md-6" style="display: flex; align-items: center">
-              <button type="button" class="btn btn-default">Сохранить</button>
+              <button
+                type="button"
+                class="btn btn-default"
+                @click="saveTopBanners"
+              >
+                Сохранить
+              </button>
             </div>
           </div>
         </div>
@@ -118,29 +130,63 @@
             <div class="col-md-3">
               <div class="form-group">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio1" />
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="radio1"
+                    v-model="backgroundBanner.bannerMode"
+                    @change="changeBannerMode"
+                    value="Фото на фоне"
+                    checked
+                  />
                   <label class="form-check-label">Фото на фоне</label>
                 </div>
                 <div class="form-check">
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="radio1"
-                    checked
+                    name="radio2"
+                    value="Просто фон"
+                    v-model="backgroundBanner.bannerMode"
+                    @change="changeBannerMode"
                   />
                   <label class="form-check-label">Просто фон</label>
                 </div>
               </div>
             </div>
             <div class="col-md-9" style="display: flex; flex-direction: row">
-              <div
-                class="mr-4"
-                style="height: 100px; width: 150px; border: 1px solid #ced4da"
-              ></div>
-              <button type="button" class="btn btn-default mr-4 h50">
-                Добавить
-              </button>
-              <button type="button" class="btn btn-default mr-4">
+              <img
+                :src="backgroundBanner.image"
+                style="width: 30%; height: 100%"
+                class="mb-2 mr-4"
+                alt=""
+              />
+              <input
+                type="file"
+                id="backgroundbanner"
+                accept="image/*"
+                @input="uploadBckgBanner"
+                style="display: none"
+              />
+              <label
+                for="backgroundbanner"
+                class="
+                  btn btn-default
+                  mr-4
+                  mb-0
+                  h50
+                  d-flex
+                  align-items-center
+                  font-weight-normal
+                "
+              >
+                <span>Добавить</span>
+              </label>
+              <button
+                type="button"
+                class="btn btn-default mr-4"
+                @click="deleteBackgroundBanner()"
+              >
                 Удалить
               </button>
             </div>
@@ -205,6 +251,7 @@
                   <NewsAndPromoImg
                     @remove="deleteNewsAndPromoImg(newsAndPromoImg)"
                     :inputUrl.sync="newsAndPromoImg.inputUrl"
+                    :image.sync="newsAndPromoImg.image"
                   />
                 </div>
                 <!-- /.card -->
@@ -233,17 +280,28 @@
                 "
               >
                 <label for="" class="col-md-4">Скорость вращения</label>
-                <select name="" id="" class="form-control col-md-2">
-                  <option value="">1с</option>
-                  <option value="">2с</option>
-                  <option value="">3с</option>
-                  <option value="">4с</option>
-                  <option value="">5с</option>
+                <select
+                  name=""
+                  id=""
+                  class="form-control col-md-2"
+                  v-model="newsAndPromoSpeed"
+                >
+                  <option value="1" label="1 с"></option>
+                  <option value="2" label="2 с"></option>
+                  <option value="3" label="3 с"></option>
+                  <option value="4" label="4 с"></option>
+                  <option value="5" label="5 с"></option>
                 </select>
               </div>
             </div>
             <div class="col-md-6" style="display: flex; align-items: center">
-              <button type="button" class="btn btn-default">Сохранить</button>
+              <button
+                type="button"
+                class="btn btn-default"
+                @click="saveNewsAndPromo"
+              >
+                Сохранить
+              </button>
             </div>
           </div>
         </div>
@@ -257,6 +315,9 @@
 <script>
 import TopBannerImg from "../TopBannerImg";
 import NewsAndPromoImg from "../NewsAndPromoImg";
+import firebase from "firebase";
+
+const database = firebase.database();
 
 export default {
   components: {
@@ -264,18 +325,26 @@ export default {
     NewsAndPromoImg,
   },
   name: "PageBanners",
+
   data() {
     return {
       topBannerImgs: [],
       newsAndPromoImgs: [],
+      topBannerSpeed: "3",
+      newsAndPromoSpeed: "2",
+      backgroundBanner: {
+        image: require("../../assets/img/noimage.png"),
+        bannerMode: "Фото на фоне",
+      },
     };
   },
   methods: {
     addTopBannerImg() {
       const currenttopBannerImg = {
-        id: Math.random().toString(),
+        id: String(Date.now() * Math.random()),
         inputUrl: null,
         inputText: null,
+        image: require("../../assets/img/noimage.png"),
       };
       if (this.topBannerImgs.length < 5) {
         this.topBannerImgs.push(currenttopBannerImg);
@@ -285,8 +354,9 @@ export default {
     },
     addNewsAndPromoImg() {
       const currentNewsAndPromoImg = {
-        id: Math.random().toString(),
+        id: String(Date.now() * Math.random()),
         inputUrl: null,
+        image: require("@/assets/img/noimage.png"),
       };
       if (this.newsAndPromoImgs.length < 5) {
         this.newsAndPromoImgs.push(currentNewsAndPromoImg);
@@ -304,6 +374,84 @@ export default {
         (banner) => banner.id !== topBannerImg.id
       );
     },
+    deleteBackgroundBanner() {
+      const storageRef = firebase.storage();
+      let desertRef = storageRef.refFromURL(this.backgroundBanner.image);
+      desertRef.delete();
+
+      this.backgroundBanner.image = require("../../assets/img/noimage.png");
+
+      database.ref("banners/backgroundbanner").set(this.backgroundBanner);
+    },
+    saveTopBanners: function () {
+      database.ref("banners/topbannerimgs").set(this.topBannerImgs);
+      database.ref("banners/topbannerspeed").set(this.topBannerSpeed);
+    },
+    saveNewsAndPromo: function () {
+      database.ref("banners/newsandpromoimgs").set(this.newsAndPromoImgs);
+      database.ref("banners/newsandpromospeed").set(this.newsAndPromoSpeed);
+    },
+    uploadBckgBanner: async function (event) {
+      const file = event.target.files[0];
+
+      this.backgroundBanner.image = URL.createObjectURL(file);
+
+      const storageRef = firebase
+        .storage()
+        .ref(`images/${Date.now()}${file.name}`);
+      this.backgroundBanner.image = await storageRef
+        .put(file)
+        .then(async function (snapshot) {
+          return await snapshot.ref.getDownloadURL();
+        });
+
+      database.ref("banners/backgroundbanner").set(this.backgroundBanner);
+    },
+    changeBannerMode: function () {
+      database.ref("banners/backgroundbanner").set(this.backgroundBanner);
+    },
+  },
+  mounted() {
+    database.ref("banners/topbannerimgs").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.topBannerImgs = snapshot.val();
+      } else {
+        this.topBannerImgs = [];
+      }
+    });
+    database.ref("banners/topbannerspeed").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.topBannerSpeed = snapshot.val();
+      } else {
+        this.topBannerSpeed = "3";
+      }
+    });
+
+    database.ref("banners/newsandpromoimgs").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.newsAndPromoImgs = snapshot.val();
+      } else {
+        this.newsAndPromoImgs = [];
+      }
+    });
+    database.ref("banners/newsandpromospeed").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.newsAndPromoSpeed = snapshot.val();
+      } else {
+        this.newsAndPromoSpeed = "3";
+      }
+    });
+
+    database.ref("banners/backgroundbanner").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.backgroundBanner = snapshot.val();
+      } else {
+        this.backgroundBanner = {
+          image: require("../../assets/img/noimage.png"),
+          bannerMode: "Фото на фоне",
+        };
+      }
+    });
   },
 };
 </script>

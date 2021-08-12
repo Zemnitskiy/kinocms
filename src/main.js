@@ -6,6 +6,7 @@ import store from "./store";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+import "firebase/storage";
 
 import "./assets/css/adminlte.min.css";
 import "./assets/js/bootstrap.bundle.min.js";

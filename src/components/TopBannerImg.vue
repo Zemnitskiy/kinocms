@@ -11,14 +11,22 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body" style="padding: 0">
-      <div
-        style="border: 1px solid #ced4da; width: 100%; height: 150px"
-        class="ml-auto mr-auto mb-3"
-      ></div>
+      <img
+        :src="updatedImage"
+        style="width: 100%; height: 100%"
+        class="mb-2"
+        alt=""
+      />
       <form>
         <div class="form-group mb-2">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile" />
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFile"
+              accept="image/*"
+              @input="uploadImg"
+            />
             <label class="custom-file-label" for="customFile"
               >Выберите файл</label
             >
@@ -67,6 +75,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   props: {
     inputUrl: {
@@ -75,16 +85,24 @@ export default {
     inputText: {
       type: String,
     },
+    image: {
+      type: String,
+    },
   },
   data() {
     return {
       updatedInputUrl: this.inputUrl,
       updatedInputText: this.inputText,
+      updatedImage: this.image,
     };
   },
   name: "TopBannerImg",
   methods: {
     removeTopBannerImg: function () {
+      const storageRef = firebase.storage();
+      let desertRef = storageRef.refFromURL(this.updatedImage);
+      desertRef.delete();
+
       this.$emit("remove");
     },
     updateUrl: function () {
@@ -92,6 +110,43 @@ export default {
     },
     updateText: function () {
       this.$emit("update:inputText", this.updatedInputText);
+    },
+    uploadImg: async function (event) {
+      const file = event.target.files[0];
+
+      this.updatedImage = URL.createObjectURL(file);
+
+      // this.updatedImage = fetch(this.updatedImage)
+      //   .then((res) => {
+      //     return res.blob();
+      //   })
+      //   .then((blob) => {
+      //     //uploading blob to firebase storage
+      //     firebase
+      //       .storage()
+      //       .ref(`images/${Date.now()}${file.name}`)
+      //       .put(blob)
+      //       .then(function (snapshot) {
+      //         return snapshot.ref.getDownloadURL();
+      //       })
+      //       .then((url) => {
+      //         console.log("Firebase storage image uploaded : ", url);
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+
+      const storageRef = firebase
+        .storage()
+        .ref(`images/${Date.now()}${file.name}`);
+      this.updatedImage = await storageRef
+        .put(file)
+        .then(async function (snapshot) {
+          return await snapshot.ref.getDownloadURL();
+        });
+
+      this.$emit("update:image", this.updatedImage);
     },
   },
 };

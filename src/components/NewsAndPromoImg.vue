@@ -15,14 +15,22 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body" style="padding: 0">
-      <div
-        style="border: 1px solid #ced4da; width: 100%; height: 150px"
-        class="ml-auto mr-auto mb-3"
-      ></div>
+      <img
+        :src="updatedImage"
+        style="width: 100%; height: 100%"
+        class="mb-2"
+        alt=""
+      />
       <form>
         <div class="form-group mb-2">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile" />
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFile"
+              accept="image/*"
+              @input="uploadImg"
+            />
             <label class="custom-file-label" for="customFile"
               >Выберите файл</label
             >
@@ -53,24 +61,48 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   props: {
     inputUrl: {
+      type: String,
+    },
+    image: {
       type: String,
     },
   },
   data() {
     return {
       updatedInputUrl: this.inputUrl,
+      updatedImage: this.image,
     };
   },
   name: "NewsAndPromoImg",
   methods: {
     removenewsAndPromoImg: function () {
+      const storageRef = firebase.storage();
+      let desertRef = storageRef.refFromURL(this.updatedImage);
+      desertRef.delete();
+
       this.$emit("remove");
     },
     updateUrl: function () {
       this.$emit("update:inputUrl", this.updatedInputUrl);
+    },
+    uploadImg: async function (event) {
+      const file = event.target.files[0];
+
+      const storageRef = firebase
+        .storage()
+        .ref(`images/${Date.now()}${file.name}`);
+      this.updatedImage = await storageRef
+        .put(file)
+        .then(async function (snapshot) {
+          return await snapshot.ref.getDownloadURL();
+        });
+
+      this.$emit("update:image", this.updatedImage);
     },
   },
 };
