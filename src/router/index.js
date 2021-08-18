@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/pagebanners",
     name: "Pagebanners",
-    component: () => import("@/components/pages/PageBanners.vue"),
+    component: () => import("@/components/pages/pagebanners/PageBanners.vue"),
   },
   {
     path: "/pagecinemas",
@@ -22,7 +22,7 @@ const routes = [
   {
     path: "/pagefilms",
     name: "Pagefilms",
-    component: () => import("@/components/pages/PageFilms.vue"),
+    component: () => import("@/components/pages/pagefilms/PageFilms.vue"),
   },
   {
     path: "/pagenews",
@@ -48,6 +48,11 @@ const routes = [
     path: "/pageusers",
     name: "PageUsers",
     component: () => import("@/components/pages/PageUsers.vue"),
+  },
+  {
+    path: "/addfilm",
+    name: "AddFilm",
+    component: () => import("@/components/pages/pagefilms/AddFilm.vue"),
   },
 ];
 

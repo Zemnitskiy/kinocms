@@ -4,20 +4,6 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Список текущих фильмов</h3>
-          <div class="card-tools">
-            <!-- Buttons, labels, and many other things can be placed here! -->
-            <div class="form-group mb-0">
-              <div class="custom-control custom-switch">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customSwitch1"
-                />
-                <label class="custom-control-label" for="customSwitch1"></label>
-              </div>
-            </div>
-          </div>
-          <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -90,20 +76,6 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Фильмы которые скоро покажут</h3>
-          <div class="card-tools">
-            <!-- Buttons, labels, and many other things can be placed here! -->
-            <div class="form-group mb-0">
-              <div class="custom-control custom-switch">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customSwitch1"
-                />
-                <label class="custom-control-label" for="customSwitch1"></label>
-              </div>
-            </div>
-          </div>
-          <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -133,7 +105,7 @@
                   :key="filmCardFuture.id"
                 >
                   <FilmCardFuture
-                    @remove="deleteFilmCard(filmCardFuture)"
+                    @remove="deleteFilmCardFuture(filmCardFuture)"
                     :image.sync="filmCardFuture.image"
                   />
                 </div>
@@ -161,7 +133,11 @@
                 align-items: center;
               "
             >
-              <button type="button" class="btn btn-default" @click="saveFilms">
+              <button
+                type="button"
+                class="btn btn-default"
+                @click="saveFilmsFuture"
+              >
                 Сохранить
               </button>
             </div>
@@ -175,8 +151,8 @@
 </template>
 
 <script>
-import FilmCard from "../FilmCard";
-import FilmCardFuture from "../FilmCardFuture";
+import FilmCard from "../pagefilms/FilmCard.vue";
+import FilmCardFuture from "../pagefilms/FilmCardFuture.vue";
 import firebase from "firebase";
 
 const database = firebase.database();
@@ -226,13 +202,23 @@ export default {
     saveFilms: function () {
       database.ref("films/filmcards").set(this.filmCards);
     },
+    saveFilmsFuture: function () {
+      database.ref("films/filmcardsfuture").set(this.filmCardsFuture);
+    },
   },
   mounted() {
-    database.ref("banners/filmcards").on("value", (snapshot) => {
+    database.ref("films/filmcards").on("value", (snapshot) => {
       if (snapshot.val() != null) {
         this.filmCards = snapshot.val();
       } else {
         this.filmCards = [];
+      }
+    });
+    database.ref("films/filmcardsfuture").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.filmCardsFuture = snapshot.val();
+      } else {
+        this.filmCardsFuture = [];
       }
     });
   },

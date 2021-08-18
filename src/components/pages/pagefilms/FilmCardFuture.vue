@@ -11,12 +11,14 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body d-flex flex-column" style="padding: 0">
-      <img
-        :src="updatedImage"
-        style="width: 100%; height: 100%"
-        class="mb-2"
-        alt=""
-      />
+      <router-link to="/addfilm">
+        <img
+          :src="updatedImage"
+          style="width: 100%; height: 100%"
+          class="mb-2"
+          alt=""
+        />
+      </router-link>
       <span class="pb-2" style="text-align: center">{{ movieTitle }}</span>
     </div>
     <!-- /.card-body -->
@@ -41,9 +43,15 @@ export default {
   name: "FilmCardFuture",
   methods: {
     removeFilmCard: function () {
-      const storageRef = firebase.storage();
-      let desertRef = storageRef.refFromURL(this.updatedImage);
-      desertRef.delete();
+      if (
+        !this.updatedImage.includes("blob") &&
+        !this.updatedImage.includes("noimage")
+      ) {
+        const storageRef = firebase.storage();
+
+        let desertRef = storageRef.refFromURL(this.updatedImage);
+        desertRef.delete();
+      }
 
       this.$emit("remove");
     },

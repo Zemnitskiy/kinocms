@@ -31,8 +31,8 @@
               accept="image/*"
               @input="uploadImg"
             />
-            <label class="custom-file-label" for="customFile"
-              >Выберите файл</label
+            <label class="custom-file-label text-center" for="customFile"
+              >Добавить</label
             >
           </div>
         </div>
@@ -81,9 +81,15 @@ export default {
   name: "NewsAndPromoImg",
   methods: {
     removenewsAndPromoImg: function () {
-      const storageRef = firebase.storage();
-      let desertRef = storageRef.refFromURL(this.updatedImage);
-      desertRef.delete();
+      if (
+        !this.updatedImage.includes("blob") &&
+        !this.updatedImage.includes("noimage")
+      ) {
+        const storageRef = firebase.storage();
+
+        let desertRef = storageRef.refFromURL(this.updatedImage);
+        desertRef.delete();
+      }
 
       this.$emit("remove");
     },
@@ -93,17 +99,18 @@ export default {
     uploadImg: async function (event) {
       const file = event.target.files[0];
 
-      const storageRef = firebase
-        .storage()
-        .ref(`images/${Date.now()}${file.name}`);
-      this.updatedImage = await storageRef
-        .put(file)
-        .then(async function (snapshot) {
-          return await snapshot.ref.getDownloadURL();
-        });
+      this.updatedImage = URL.createObjectURL(file);
 
       this.$emit("update:image", this.updatedImage);
     },
   },
 };
 </script>
+
+<style scoped>
+.custom-file-label::after {
+  content: "";
+  background-color: transparent;
+  border-left: none;
+}
+</style>

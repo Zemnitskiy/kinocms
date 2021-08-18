@@ -313,8 +313,8 @@
 </template>
 
 <script>
-import TopBannerImg from "../TopBannerImg";
-import NewsAndPromoImg from "../NewsAndPromoImg";
+import TopBannerImg from "../pagebanners/TopBannerImg.vue";
+import NewsAndPromoImg from "../pagebanners/NewsAndPromoImg";
 import firebase from "firebase";
 
 const database = firebase.database();
@@ -333,7 +333,7 @@ export default {
       topBannerSpeed: "3",
       newsAndPromoSpeed: "2",
       backgroundBanner: {
-        image: require("../../assets/img/noimage.png"),
+        image: require("@/assets/img/noimage.png"),
         bannerMode: "Фото на фоне",
       },
     };
@@ -344,7 +344,7 @@ export default {
         id: String(Date.now() * Math.random()),
         inputUrl: null,
         inputText: null,
-        image: require("../../assets/img/noimage.png"),
+        image: require("@/assets/img/noimage.png"),
       };
       if (this.topBannerImgs.length < 5) {
         this.topBannerImgs.push(currenttopBannerImg);
@@ -379,16 +379,68 @@ export default {
       let desertRef = storageRef.refFromURL(this.backgroundBanner.image);
       desertRef.delete();
 
-      this.backgroundBanner.image = require("../../assets/img/noimage.png");
+      this.backgroundBanner.image = require("@/assets/img/noimage.png");
 
       database.ref("banners/backgroundbanner").set(this.backgroundBanner);
     },
     saveTopBanners: function () {
-      database.ref("banners/topbannerimgs").set(this.topBannerImgs);
+      //uploading images to firebase storage
+      this.topBannerImgs.map(async (topBannerImg) => {
+        if (
+          !topBannerImg.image.includes("noimage") &&
+          !topBannerImg.image.includes("firebasestorage")
+        ) {
+          let blob = await fetch(topBannerImg.image).then((res) => {
+            return res.blob();
+          });
+
+          const storageRef = firebase
+            .storage()
+            .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+          topBannerImg.image = await storageRef
+            .put(blob)
+            .then(async function (snapshot) {
+              return await snapshot.ref.getDownloadURL();
+            });
+        }
+      });
+
+      setTimeout(
+        () => database.ref("banners/topbannerimgs").set(this.topBannerImgs),
+        5000
+      );
+
       database.ref("banners/topbannerspeed").set(this.topBannerSpeed);
     },
     saveNewsAndPromo: function () {
-      database.ref("banners/newsandpromoimgs").set(this.newsAndPromoImgs);
+      //uploading images to firebase storage
+      this.newsAndPromoImgs.map(async (newsAndPromoImg) => {
+        if (
+          !newsAndPromoImg.image.includes("noimage") &&
+          !newsAndPromoImg.image.includes("firebasestorage")
+        ) {
+          let blob = await fetch(newsAndPromoImg.image).then((res) => {
+            return res.blob();
+          });
+
+          const storageRef = firebase
+            .storage()
+            .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+          newsAndPromoImg.image = await storageRef
+            .put(blob)
+            .then(async function (snapshot) {
+              return await snapshot.ref.getDownloadURL();
+            });
+        }
+      });
+
+      setTimeout(
+        () =>
+          database.ref("banners/newsandpromoimgs").set(this.newsAndPromoImgs),
+        5000
+      );
       database.ref("banners/newsandpromospeed").set(this.newsAndPromoSpeed);
     },
     uploadBckgBanner: async function (event) {
@@ -447,7 +499,7 @@ export default {
         this.backgroundBanner = snapshot.val();
       } else {
         this.backgroundBanner = {
-          image: require("../../assets/img/noimage.png"),
+          image: require("@/assets/img/noimage.png"),
           bannerMode: "Фото на фоне",
         };
       }
