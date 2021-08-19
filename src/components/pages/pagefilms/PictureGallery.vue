@@ -2,8 +2,8 @@
   <div class="card-body p-0">
     <div class="row" style="flex-direction: row-reverse">
       <div
-        class="col-md-2"
-        style="display: flex; align-items: center; justify-content: center"
+        class="col-md-2 d-flex align-items-center"
+        style="justify-content: center"
       >
         <button
           type="button"
@@ -66,12 +66,15 @@ export default {
         alert(`Добавлено максимальное количество баннеров!`);
       }
     },
+    deletePicture(picture) {
+      this.pictures = this.pictures.filter(
+        (banner) => banner.id !== picture.id
+      );
+    },
   },
-  deletePicture(picture) {
-    this.pictures = this.pictures.filter((banner) => banner.id !== picture.id);
-  },
+
   mounted() {
-    database.ref("banners/pictures").on("value", (snapshot) => {
+    database.ref("films/pictures").on("value", (snapshot) => {
       if (snapshot.val() != null) {
         this.pictures = snapshot.val();
       } else {

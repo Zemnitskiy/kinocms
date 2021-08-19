@@ -65,7 +65,7 @@ export default {
         desertRef.delete();
       }
 
-      this.$emit("remove");
+      this.$emit("remove", this.picture);
     },
     uploadPicture: async function (event) {
       const file = event.target.files[0];

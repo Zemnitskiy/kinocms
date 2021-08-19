@@ -5,6 +5,10 @@
     <FilmDescription />
     <MainPicture />
     <PictureGallery />
+    <FilmTrailer />
+    <FilmType />
+    <SeoBlock />
+    <FooterButtons />
   </div>
 </template>
 
@@ -14,6 +18,10 @@ import FilmName from "./FilmName";
 import FilmDescription from "./FilmDescription";
 import MainPicture from "./MainPicture";
 import PictureGallery from "./PictureGallery";
+import FilmTrailer from "./FilmTrailer";
+import FilmType from "./FilmType";
+import SeoBlock from "./SeoBlock";
+import FooterButtons from "./FooterButtons";
 
 export default {
   components: {
@@ -22,11 +30,12 @@ export default {
     FilmDescription,
     MainPicture,
     PictureGallery,
+    FilmTrailer,
+    FilmType,
+    SeoBlock,
+    FooterButtons,
   },
   name: "AddFilm",
-  data() {
-    return {};
-  },
 };
 </script>
 
