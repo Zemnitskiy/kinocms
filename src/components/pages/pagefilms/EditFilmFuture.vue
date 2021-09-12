@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <LangSwitcher :language.sync="filmData.language" />
-    <FilmName :filmName.sync="filmData.filmName" />
-    <FilmDescription :filmDescription.sync="filmData.filmDescription" />
-    <MainPicture :mainPicture.sync="filmData.mainPicture" />
-    <PictureGallery :picturesGallery.sync="filmData.picturesGallery" />
-    <FilmTrailer :filmTrailer.sync="filmData.filmTrailer" />
-    <FilmType :filmType.sync="filmData.filmType" />
-    <SeoBlock :seoBlock.sync="filmData.seoBlock" />
+    <LangSwitcher :language.sync="filmCard.language" />
+    <FilmName :filmName.sync="filmCard.filmName" />
+    <FilmDescription :filmDescription.sync="filmCard.filmDescription" />
+    <MainPicture :mainPicture.sync="filmCard.mainPicture" />
+    <PictureGallery :picturesGallery.sync="filmCard.picturesGallery" />
+    <FilmTrailer :filmTrailer.sync="filmCard.filmTrailer" />
+    <FilmType :filmType.sync="filmCard.filmType" />
+    <SeoBlock :seoBlock.sync="filmCard.seoBlock" />
     <FooterButtons @saveFilm="saveFilmToDb" />
   </div>
 </template>
@@ -28,11 +28,11 @@ const database = firebase.database();
 
 export default {
   props: {
-    filmCard: {
+    filmData: {
       type: Object,
       required: true,
     },
-    filmCards: {
+    filmsData: {
       type: Array,
       required: true,
     },
@@ -48,11 +48,11 @@ export default {
     SeoBlock,
     FooterButtons,
   },
-  name: "AddFilm",
+  name: "EditFilm",
   data() {
     return {
-      filmData: this.filmCard,
-      filmsData: this.filmCards,
+      filmCard: this.filmData,
+      filmCards: this.filmsData,
     };
   },
   methods: {
@@ -98,10 +98,8 @@ export default {
           });
       }
 
-      this.filmsData.push(this.filmData);
-
       setTimeout(
-        () => database.ref("films/filmcards/").set(this.filmsData),
+        () => database.ref("films/filmcards/").set(this.filmCards),
         5000
       );
 

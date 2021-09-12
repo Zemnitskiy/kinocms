@@ -16,14 +16,21 @@
                 justify-content: center;
               "
             >
-              <button
-                type="button"
-                class="btn btn-block btn-default"
-                v-on:click="addFilmCard"
+              <router-link
+                :to="{
+                  name: 'AddFilm',
+                  params: {
+                    id: filmCard.id,
+                    filmCard: filmCard,
+                    filmCards: filmCards,
+                  },
+                }"
               >
-                Добавить<br />
-                фильм
-              </button>
+                <button type="button" class="btn btn-block btn-default">
+                  Добавить<br />
+                  фильм
+                </button>
+              </router-link>
             </div>
             <div class="col-md-10">
               <div class="row" v-if="filmCards.length">
@@ -34,7 +41,8 @@
                 >
                   <FilmCard
                     @remove="deleteFilmCard(filmCard)"
-                    :image.sync="filmCard.image"
+                    :filmCard="filmCard"
+                    :filmCards="filmCards"
                   />
                 </div>
                 <!-- /.card -->
@@ -43,31 +51,6 @@
           </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-          <div class="row">
-            <div
-              class="col-md-6"
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            ></div>
-            <div
-              class="col-md-12"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <button type="button" class="btn btn-default" @click="saveFilms">
-                Сохранить
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- /.card-footer -->
       </div>
       <!-- /.card -->
     </div>
@@ -88,14 +71,21 @@
                 justify-content: center;
               "
             >
-              <button
-                type="button"
-                class="btn btn-block btn-default"
-                v-on:click="addFilmCardFuture"
+              <router-link
+                :to="{
+                  name: 'AddFilmFuture',
+                  params: {
+                    id: filmCardFuture.id,
+                    filmCardFuture: filmCardFuture,
+                    filmCardsFuture: filmCardsFuture,
+                  },
+                }"
               >
-                Добавить<br />
-                фильм
-              </button>
+                <button type="button" class="btn btn-block btn-default">
+                  Добавить<br />
+                  фильм
+                </button>
+              </router-link>
             </div>
             <div class="col-md-10">
               <div class="row" v-if="filmCardsFuture.length">
@@ -106,7 +96,8 @@
                 >
                   <FilmCardFuture
                     @remove="deleteFilmCardFuture(filmCardFuture)"
-                    :image.sync="filmCardFuture.image"
+                    :filmCardFuture="filmCardFuture"
+                    :filmCardsFuture="filmCardsFuture"
                   />
                 </div>
                 <!-- /.card -->
@@ -115,35 +106,6 @@
           </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-          <div class="row">
-            <div
-              class="col-md-6"
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            ></div>
-            <div
-              class="col-md-12"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <button
-                type="button"
-                class="btn btn-default"
-                @click="saveFilmsFuture"
-              >
-                Сохранить
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- /.card-footer -->
       </div>
       <!-- /.card -->
     </div>
@@ -151,8 +113,8 @@
 </template>
 
 <script>
-import FilmCard from "../pagefilms/FilmCard.vue";
-import FilmCardFuture from "../pagefilms/FilmCardFuture.vue";
+import FilmCard from "../pagefilms/FilmCard";
+import FilmCardFuture from "../pagefilms/FilmCardFuture";
 import firebase from "firebase";
 
 const database = firebase.database();
@@ -168,17 +130,47 @@ export default {
     return {
       filmCards: [],
       filmCardsFuture: [],
+      filmCard: {
+        id: String(Date.now() * Math.floor(Math.random() + 1)),
+        language: "ukr",
+        filmName: "Название фильма",
+        filmDescription: "",
+        mainPicture: require("@/assets/img/noimage.png"),
+        picturesGallery: [{}],
+        filmTrailer: "",
+        filmType: {
+          filmType3d: false,
+          filmType2d: false,
+          filmTypeImax: false,
+        },
+        seoBlock: {
+          seoUrl: "",
+          seoTitle: "",
+          seoKeywords: "",
+        },
+      },
+      filmCardFuture: {
+        id: String(Date.now() * Math.floor(Math.random() + 1)),
+        language: "ukr",
+        filmName: "Название фильма",
+        filmDescription: "",
+        mainPicture: require("@/assets/img/noimage.png"),
+        picturesGallery: [{}],
+        filmTrailer: "",
+        filmType: {
+          filmType3d: false,
+          filmType2d: false,
+          filmTypeImax: false,
+        },
+        seoBlock: {
+          seoUrl: "",
+          seoTitle: "",
+          seoKeywords: "",
+        },
+      },
     };
   },
   methods: {
-    addFilmCard() {
-      const currentFilmCard = {
-        id: String(Date.now() * Math.random()),
-        image: require("@/assets/img/noimage.png"),
-      };
-
-      this.filmCards.push(currentFilmCard);
-    },
     addFilmCardFuture() {
       const currentFilmCard = {
         id: String(Date.now() * Math.random()),
@@ -192,18 +184,13 @@ export default {
       this.filmCards = this.filmCards.filter(
         (banner) => banner.id !== filmCard.id
       );
+      database.ref("films/filmcards").set(this.filmCards);
     },
 
     deleteFilmCardFuture(filmCardFuture) {
       this.filmCardsFuture = this.filmCardsFuture.filter(
         (banner) => banner.id !== filmCardFuture.id
       );
-    },
-    saveFilms: function () {
-      database.ref("films/filmcards").set(this.filmCards);
-    },
-    saveFilmsFuture: function () {
-      database.ref("films/filmcardsfuture").set(this.filmCardsFuture);
     },
   },
   mounted() {

@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-9 d-flex align-items-center">
       <img
-        :src="mainPicture"
+        :src="picture"
         style="width: 30%; height: 100%"
         class="mb-2 mr-4"
         alt=""
@@ -46,40 +46,35 @@
 
 <script>
 import firebase from "firebase";
-const database = firebase.database();
 
 export default {
+  props: {
+    mainPicture: {
+      type: String,
+    },
+  },
   name: "MainPicture",
   data() {
     return {
-      mainPicture: require("@/assets/img/noimage.png"),
+      picture: this.mainPicture,
     };
   },
   methods: {
-    uploadMainPicture: async function (event) {
+    uploadMainPicture: function (event) {
       const file = event.target.files[0];
 
-      this.mainPicture = URL.createObjectURL(file);
+      this.picture = URL.createObjectURL(file);
 
-      const storageRef = firebase
-        .storage()
-        .ref(`images/${Date.now()}${file.name}`);
-      this.mainPicture = await storageRef
-        .put(file)
-        .then(async function (snapshot) {
-          return await snapshot.ref.getDownloadURL();
-        });
-
-      database.ref("addfilm/mainpicture").set(this.mainPicture);
+      this.$emit("update:mainPicture", this.picture);
     },
     deleteMainPicture: function () {
       const storageRef = firebase.storage();
-      let desertRef = storageRef.refFromURL(this.mainPicture);
+      let desertRef = storageRef.refFromURL(this.picture);
       desertRef.delete();
 
-      this.mainPicture = require("@/assets/img/noimage.png");
+      this.picture = require("@/assets/img/noimage.png");
 
-      database.ref("addfilm/mainpicture").set(this.mainPicture);
+      this.$emit("update:mainPicture", this.picture);
     },
   },
 };

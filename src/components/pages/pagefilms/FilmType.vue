@@ -6,18 +6,29 @@
     <div class="col-6">
       <div class="row">
         <div class="form-check mr-3 ml-2 d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" v-model="checked3d" />
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="type.filmType3d"
+            @change="updateType"
+          />
           <label class="form-check-label">3D</label>
         </div>
         <div class="form-check mr-3 d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" v-model="checked2d" />
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="type.filmType2d"
+            @change="updateType"
+          />
           <label class="form-check-label">2D</label>
         </div>
         <div class="form-check d-flex align-items-center">
           <input
             class="form-check-input"
             type="checkbox"
-            v-model="checkedImax"
+            v-model="type.filmTypeImax"
+            @change="updateType"
           />
           <label class="form-check-label">IMAX</label>
         </div>
@@ -28,13 +39,21 @@
 
 <script>
 export default {
+  props: {
+    filmType: {
+      type: Object,
+    },
+  },
   name: "FilmType",
   data() {
     return {
-      checked3d: false,
-      checked2d: false,
-      checkedImax: false,
+      type: this.filmType,
     };
+  },
+  methods: {
+    updateType: function () {
+      this.$emit("update:filmType", this.type);
+    },
   },
 };
 </script>

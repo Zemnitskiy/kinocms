@@ -41,17 +41,20 @@
 <script>
 import Picture from "./Picture";
 
-import firebase from "firebase";
-const database = firebase.database();
-
 export default {
+  props: {
+    picturesGallery: {
+      type: Array,
+      require: true,
+    },
+  },
   components: {
     Picture,
   },
   name: "PictureGallery",
   data() {
     return {
-      pictures: [],
+      pictures: this.picturesGallery,
     };
   },
   methods: {
@@ -62,6 +65,7 @@ export default {
       };
       if (this.pictures.length < 5) {
         this.pictures.push(currentPicture);
+        this.$emit("update:picturesGallery", this.pictures);
       } else {
         alert(`Добавлено максимальное количество баннеров!`);
       }
@@ -70,47 +74,8 @@ export default {
       this.pictures = this.pictures.filter(
         (banner) => banner.id !== picture.id
       );
+      this.$emit("update:picturesGallery", this.pictures);
     },
   },
-
-  mounted() {
-    database.ref("films/pictures").on("value", (snapshot) => {
-      if (snapshot.val() != null) {
-        this.pictures = snapshot.val();
-      } else {
-        this.pictures = [];
-      }
-    });
-  },
-  //  saveTopBanners: function () {
-  //   //uploading images to firebase storage
-  //   this.pictures.map(async (topBannerImg) => {
-  //     if (
-  //       !topBannerImg.image.includes("noimage") &&
-  //       !topBannerImg.image.includes("firebasestorage")
-  //     ) {
-  //       let blob = await fetch(topBannerImg.image).then((res) => {
-  //         return res.blob();
-  //       });
-
-  //       const storageRef = firebase
-  //         .storage()
-  //         .ref(`images/${Date.now()}${blob.size}.jpg`);
-
-  //       topBannerImg.image = await storageRef
-  //         .put(blob)
-  //         .then(async function (snapshot) {
-  //           return await snapshot.ref.getDownloadURL();
-  //         });
-  //     }
-  //   });
-
-  //   setTimeout(
-  //     () => database.ref("banners/pictures").set(this.pictures),
-  //     5000
-  //   );
-
-  //   database.ref("banners/topbannerspeed").set(this.topBannerSpeed);
-  // },
 };
 </script>

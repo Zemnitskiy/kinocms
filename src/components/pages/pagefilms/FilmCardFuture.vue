@@ -10,64 +10,52 @@
       <!-- /.card-tools -->
     </div>
     <!-- /.card-header -->
-    <div class="card-body d-flex flex-column" style="padding: 0">
-      <router-link to="/addfilm">
-        <img
-          :src="updatedImage"
-          style="width: 100%; height: 100%"
-          class="mb-2"
-          alt=""
-        />
-      </router-link>
-      <span class="pb-2" style="text-align: center">{{ movieTitle }}</span>
+    <div class="card-body d-flex flex-column p-0" @click="editFilm()">
+      <img
+        :src="filmData.mainPicture"
+        style="width: 100%; height: 100%"
+        class="mb-2"
+        alt=""
+      />
+
+      <span class="pb-2 text-center text-bold">{{ filmData.filmName }}</span>
     </div>
     <!-- /.card-body -->
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
-
 export default {
   props: {
-    image: {
-      type: String,
+    filmCardFuture: {
+      type: Object,
+      required: true,
+    },
+    filmCardsFuture: {
+      type: Array,
+      required: true,
     },
   },
   data() {
     return {
-      updatedImage: this.image,
-      movieTitle: "Название фильма",
+      filmData: this.filmCardFuture,
+      filmsData: this.filmCardsFuture,
     };
   },
   name: "FilmCardFuture",
   methods: {
     removeFilmCard: function () {
-      if (
-        !this.updatedImage.includes("blob") &&
-        !this.updatedImage.includes("noimage")
-      ) {
-        const storageRef = firebase.storage();
-
-        let desertRef = storageRef.refFromURL(this.updatedImage);
-        desertRef.delete();
-      }
-
       this.$emit("remove");
     },
-    uploadImg: async function (event) {
-      const file = event.target.files[0];
-
-      const storageRef = firebase
-        .storage()
-        .ref(`images/${Date.now()}${file.name}`);
-      this.updatedImage = await storageRef
-        .put(file)
-        .then(async function (snapshot) {
-          return await snapshot.ref.getDownloadURL();
-        });
-
-      this.$emit("update:image", this.updatedImage);
+    editFilm() {
+      return this.$router.push({
+        name: "EditFilm",
+        params: {
+          id: this.filmData.id,
+          filmData: this.filmData,
+          filmsData: this.filmsData,
+        },
+      });
     },
   },
 };

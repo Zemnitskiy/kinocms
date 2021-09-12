@@ -1,12 +1,16 @@
 <template>
   <div class="container">
-    <LangSwitcher :language.sync="filmData.language" />
+    <LangSwitcher :language="filmData.language" />
     <FilmName :filmName.sync="filmData.filmName" />
     <FilmDescription :filmDescription.sync="filmData.filmDescription" />
     <MainPicture :mainPicture.sync="filmData.mainPicture" />
     <PictureGallery :picturesGallery.sync="filmData.picturesGallery" />
     <FilmTrailer :filmTrailer.sync="filmData.filmTrailer" />
-    <FilmType :filmType.sync="filmData.filmType" />
+    <FilmType
+      :filmType3d.sync="filmData.filmType3d"
+      :filmType2d.sync="filmData.filmType2d"
+      :filmTypeImax.sync="filmData.filmTypeImax"
+    />
     <SeoBlock :seoBlock.sync="filmData.seoBlock" />
     <FooterButtons @saveFilm="saveFilmToDb" />
   </div>
@@ -27,16 +31,6 @@ import firebase from "firebase";
 const database = firebase.database();
 
 export default {
-  props: {
-    filmCard: {
-      type: Object,
-      required: true,
-    },
-    filmCards: {
-      type: Array,
-      required: true,
-    },
-  },
   components: {
     LangSwitcher,
     FilmName,
@@ -51,12 +45,28 @@ export default {
   name: "AddFilm",
   data() {
     return {
-      filmData: this.filmCard,
-      filmsData: this.filmCards,
+      filmData: {
+        language: "ukr",
+        filmName: "",
+        filmDescription: "",
+        mainPicture: require("@/assets/img/noimage.png"),
+        picturesGallery: [],
+        filmTrailer: "",
+
+        filmType3d: false,
+        filmType2d: false,
+        filmTypeImax: false,
+
+        seoBlock: {
+          seoUrl: "",
+          seoTitle: "",
+          seoKeywords: "",
+        },
+      },
     };
   },
   methods: {
-    saveFilmToDb: async function () {
+    saveFilmToDb: function () {
       //uploading picturesGallery to firebase storage
       if (this.filmData.picturesGallery) {
         this.filmData.picturesGallery.map(async (picture) => {
@@ -81,35 +91,37 @@ export default {
         });
       }
 
-      //uploading mainPicture to firebase storage
-      if (!this.filmData.mainPicture.includes("noimage")) {
-        let blob = await fetch(this.filmData.mainPicture).then((res) => {
-          return res.blob();
-        });
-
-        const storageRef = firebase
-          .storage()
-          .ref(`images/${Date.now()}${blob.size}.jpg`);
-
-        this.filmData.mainPicture = await storageRef
-          .put(blob)
-          .then(async function (snapshot) {
-            return await snapshot.ref.getDownloadURL();
-          });
-      }
-
-      this.filmsData.push(this.filmData);
-
-      setTimeout(
-        () => database.ref("films/filmcards/").set(this.filmsData),
-        5000
-      );
-
-      this.$router.push({ name: "Pagefilms" });
+      setTimeout(() => database.ref("films/filmdata").set(this.filmData), 5000);
     },
     loadDefaults: function () {
       return this.defaultFilm;
     },
+  },
+  mounted() {
+    database.ref("films/filmdata").on("value", (snapshot) => {
+      if (snapshot.val() != null) {
+        this.filmData = snapshot.val();
+      } else {
+        this.filmData = {
+          language: "rus",
+          filmName: "",
+          filmDescription: "",
+          mainPicture: require("@/assets/img/noimage.png"),
+          picturesGallery: [],
+          filmTrailer: "",
+
+          filmType3d: false,
+          filmType2d: false,
+          filmTypeImax: false,
+
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+        };
+      }
+    });
   },
 };
 </script>

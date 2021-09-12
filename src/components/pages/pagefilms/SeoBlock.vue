@@ -12,9 +12,10 @@
           <input
             type="text"
             class="form-control"
-            id="filmname"
+            id="filmurl"
             placeholder="URL"
-            v-model="url"
+            v-model="seo.seoUrl"
+            @input="updateSeoBlock"
           />
         </div>
       </div>
@@ -27,9 +28,10 @@
           <input
             type="text"
             class="form-control"
-            id="filmname"
+            id="filmtitle"
             placeholder="Title"
-            v-model="title"
+            v-model="seo.seoTitle"
+            @input="updateSeoBlock"
           />
         </div>
       </div>
@@ -42,9 +44,10 @@
           <input
             type="text"
             class="form-control"
-            id="filmname"
+            id="filmkeywords"
             placeholder="Keywords"
-            v-model="keywords"
+            v-model="seo.seoKeywords"
+            @input="updateSeoBlock"
           />
         </div>
       </div>
@@ -54,13 +57,21 @@
 
 <script>
 export default {
+  props: {
+    seoBlock: {
+      type: Object,
+    },
+  },
   name: "SeoBlock",
   data() {
     return {
-      url: "",
-      title: "",
-      keywords: "",
+      seo: this.seoBlock,
     };
+  },
+  methods: {
+    updateSeoBlock: function () {
+      this.$emit("update:seoBlock", this.seo);
+    },
   },
 };
 </script>

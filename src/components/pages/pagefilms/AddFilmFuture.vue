@@ -28,11 +28,11 @@ const database = firebase.database();
 
 export default {
   props: {
-    filmCard: {
+    filmCardFuture: {
       type: Object,
       required: true,
     },
-    filmCards: {
+    filmCardsFuture: {
       type: Array,
       required: true,
     },
@@ -48,11 +48,11 @@ export default {
     SeoBlock,
     FooterButtons,
   },
-  name: "AddFilm",
+  name: "AddFilmFuture",
   data() {
     return {
-      filmData: this.filmCard,
-      filmsData: this.filmCards,
+      filmData: this.filmCardFuture,
+      filmsData: this.filmCardsFuture,
     };
   },
   methods: {
@@ -101,7 +101,7 @@ export default {
       this.filmsData.push(this.filmData);
 
       setTimeout(
-        () => database.ref("films/filmcards/").set(this.filmsData),
+        () => database.ref("films/filmcardsfuture/").set(this.filmsData),
         5000
       );
 

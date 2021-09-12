@@ -9,7 +9,8 @@
         class="form-control"
         id="filmname"
         placeholder="Название фильма"
-        v-model="filmName"
+        v-model="name"
+        @input="updateName"
       />
     </div>
   </div>
@@ -17,11 +18,21 @@
 
 <script>
 export default {
+  props: {
+    filmName: {
+      type: String,
+    },
+  },
   name: "FilmName",
   data() {
     return {
-      filmName: "",
+      name: this.filmName,
     };
+  },
+  methods: {
+    updateName: function () {
+      this.$emit("update:filmName", this.name);
+    },
   },
 };
 </script>

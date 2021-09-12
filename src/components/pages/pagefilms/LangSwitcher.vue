@@ -2,27 +2,41 @@
   <div class="row">
     <div class="col-2 offset-10">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-secondary bg-olive">
+        <label
+          class="btn btn-secondary bg-olive"
+          :class="{
+            active: pickedLanguage === 'ukr',
+            focus: pickedLanguage === 'ukr',
+          }"
+        >
           <input
             type="radio"
             name="options"
             id="option_a2"
             autocomplete="off"
-            value="rus"
-            v-model="picked"
+            value="ukr"
+            v-model="pickedLanguage"
+            @change="updateLanguage"
           />
-          Русский
+          Украинский
         </label>
-        <label class="btn btn-secondary bg-olive">
+        <label
+          class="btn btn-secondary bg-olive"
+          :class="{
+            active: pickedLanguage === 'rus',
+            focus: pickedLanguage === 'rus',
+          }"
+        >
           <input
             type="radio"
             name="options"
             id="option_a3"
             autocomplete="off"
-            value="ukr"
-            v-model="picked"
+            value="rus"
+            v-model="pickedLanguage"
+            @change="updateLanguage"
           />
-          Украинский
+          Русский
         </label>
       </div>
     </div>
@@ -31,11 +45,21 @@
 
 <script>
 export default {
+  props: {
+    language: {
+      type: String,
+    },
+  },
   name: "LangSwitcher",
   data() {
     return {
-      picked: "rus",
+      pickedLanguage: this.language,
     };
+  },
+  methods: {
+    updateLanguage: function () {
+      this.$emit("update:language", this.pickedLanguage);
+    },
   },
 };
 </script>

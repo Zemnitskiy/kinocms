@@ -9,7 +9,8 @@
         class="form-control"
         id="filmdescription"
         placeholder="Описание фильма"
-        v-model="filmDescription"
+        v-model="description"
+        @input="updateDescription"
       />
     </div>
   </div>
@@ -17,11 +18,22 @@
 
 <script>
 export default {
+  props: {
+    filmDescription: {
+      type: String,
+      require: true,
+    },
+  },
   name: "FilmDescription",
   data() {
     return {
-      filmDescription: "",
+      description: this.filmDescription,
     };
+  },
+  methods: {
+    updateDescription: function () {
+      this.$emit("update:filmDescription", this.description);
+    },
   },
 };
 </script>

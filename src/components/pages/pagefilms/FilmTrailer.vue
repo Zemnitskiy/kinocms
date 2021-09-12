@@ -9,7 +9,8 @@
         class="form-control"
         id="filmtrailer"
         placeholder="Ссылка на видео в youtube"
-        v-model="filmTrailer"
+        v-model="trailer"
+        @input="updateTrailer"
       />
     </div>
   </div>
@@ -17,11 +18,21 @@
 
 <script>
 export default {
+  props: {
+    filmTrailer: {
+      type: String,
+    },
+  },
   name: "FilmTrailer",
   data() {
     return {
-      filmTrailer: "",
+      trailer: this.filmTrailer,
     };
+  },
+  methods: {
+    updateTrailer: function () {
+      this.$emit("update:filmTrailer", this.trailer);
+    },
   },
 };
 </script>

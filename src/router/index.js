@@ -27,7 +27,7 @@ const routes = [
   {
     path: "/pagenews",
     name: "Pagenews",
-    component: () => import("@/components/pages/PageNews.vue"),
+    component: () => import("@/components/pages/pagenews/PageNews.vue"),
   },
   {
     path: "/pagenewsletter",
@@ -50,9 +50,28 @@ const routes = [
     component: () => import("@/components/pages/PageUsers.vue"),
   },
   {
-    path: "/addfilm",
+    path: "/addfilm/:id",
     name: "AddFilm",
     component: () => import("@/components/pages/pagefilms/AddFilm.vue"),
+    props: true,
+  },
+  {
+    path: "/editfilm/:id",
+    name: "EditFilm",
+    component: () => import("@/components/pages/pagefilms/EditFilm.vue"),
+    props: true,
+  },
+  {
+    path: "/addfilmfuture/:id",
+    name: "AddFilmFuture",
+    component: () => import("@/components/pages/pagefilms/AddFilmFuture.vue"),
+    props: true,
+  },
+  {
+    path: "/editfilmfuture/:id",
+    name: "EditFilmFuture",
+    component: () => import("@/components/pages/pagefilms/EditFilmFuture.vue"),
+    props: true,
   },
 ];
 
