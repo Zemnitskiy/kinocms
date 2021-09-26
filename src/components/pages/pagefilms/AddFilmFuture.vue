@@ -1,11 +1,26 @@
 <template>
   <div class="container">
     <LangSwitcher :language.sync="filmData.language" />
-    <FilmName :filmName.sync="filmData.filmName" />
-    <FilmDescription :filmDescription.sync="filmData.filmDescription" />
-    <MainPicture :mainPicture.sync="filmData.mainPicture" />
-    <PictureGallery :picturesGallery.sync="filmData.picturesGallery" />
-    <FilmTrailer :filmTrailer.sync="filmData.filmTrailer" />
+    <FilmName
+      :filmName.sync="filmData.filmName"
+      :titleProperty.sync="filmData.titles.filmName"
+    />
+    <FilmDescription
+      :filmDescription.sync="filmData.filmDescription"
+      :titleProperty.sync="filmData.titles.filmDescription"
+    />
+    <MainPicture
+      :mainPicture.sync="filmData.mainPicture"
+      :titleProperty.sync="filmData.titles.mainPicture"
+    />
+    <PictureGallery
+      :picturesGallery.sync="filmData.picturesGallery"
+      :titleProperty.sync="filmData.titles.picturesGallery"
+    />
+    <FilmTrailer
+      :filmTrailer.sync="filmData.filmTrailer"
+      :titleProperty.sync="filmData.titles.filmTrailer"
+    />
     <FilmType :filmType.sync="filmData.filmType" />
     <SeoBlock :seoBlock.sync="filmData.seoBlock" />
     <FooterButtons @saveFilm="saveFilmToDb" />

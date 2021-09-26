@@ -30,6 +30,18 @@ const routes = [
     component: () => import("@/components/pages/pagenews/PageNews.vue"),
   },
   {
+    path: "/addnews/:id",
+    name: "AddNews",
+    component: () => import("@/components/pages/pagenews/AddNews.vue"),
+    props: true,
+  },
+  {
+    path: "/editnews/:id",
+    name: "EditNews",
+    component: () => import("@/components/pages/pagenews/EditNews.vue"),
+    props: true,
+  },
+  {
     path: "/pagenewsletter",
     name: "Pagenewsletter",
     component: () => import("@/components/pages/PageNewsletter.vue"),

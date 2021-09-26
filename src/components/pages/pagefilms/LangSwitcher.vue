@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-2 offset-10">
+    <div class="col d-flex justify-content-end">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label
           class="btn btn-secondary bg-olive"

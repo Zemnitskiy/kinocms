@@ -1,7 +1,7 @@
 <template>
   <div class="row mt-2">
     <div class="col-md-2 d-flex align-items-center">
-      <span style="font-weight: 700">Главная картинка</span>
+      <span style="font-weight: 700">{{ title }}</span>
     </div>
     <div class="col-md-9 d-flex align-items-center">
       <img
@@ -52,11 +52,15 @@ export default {
     mainPicture: {
       type: String,
     },
+    titleProperty: {
+      typr: String,
+    },
   },
   name: "MainPicture",
   data() {
     return {
       picture: this.mainPicture,
+      title: this.titleProperty,
     };
   },
   methods: {

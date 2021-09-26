@@ -1,14 +1,14 @@
 <template>
   <div class="row d-flex align-items-center mt-2">
     <div class="col-2">
-      <label for="filmname" class="mb-0">Название фильма</label>
+      <label for="filmname" class="mb-0">{{ title }}</label>
     </div>
     <div class="col-6">
       <input
         type="text"
         class="form-control"
         id="filmname"
-        placeholder="Название фильма"
+        :placeholder="title"
         v-model="name"
         @input="updateName"
       />
@@ -22,11 +22,15 @@ export default {
     filmName: {
       type: String,
     },
+    titleProperty: {
+      type: String,
+    },
   },
   name: "FilmName",
   data() {
     return {
       name: this.filmName,
+      title: this.titleProperty,
     };
   },
   methods: {

@@ -8,6 +8,7 @@ import "firebase/auth";
 import "firebase/database";
 import "firebase/storage";
 
+// adminLTE
 import "./assets/css/adminlte.min.css";
 import "./assets/js/bootstrap.bundle.min.js";
 import "./assets/js/jquery.min.js";

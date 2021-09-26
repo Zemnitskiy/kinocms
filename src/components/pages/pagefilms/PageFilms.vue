@@ -148,6 +148,15 @@ export default {
           seoTitle: "",
           seoKeywords: "",
         },
+        titles: {
+          filmName: "Название фильма",
+          filmDescription: "Описание фильма",
+          mainPicture: "Главная картинка",
+          picturesGallery: "Галерея картинок",
+          filmTrailer: "Ссылка на трейлер",
+          filmType: "Тип фильма",
+          seoBlock: "SEO блок",
+        },
       },
       filmCardFuture: {
         id: String(Date.now() * Math.floor(Math.random() + 1)),
@@ -167,19 +176,19 @@ export default {
           seoTitle: "",
           seoKeywords: "",
         },
+        titles: {
+          filmName: "Название фильма",
+          filmDescription: "Описание фильма",
+          mainPicture: "Главная картинка",
+          picturesGallery: "Галерея картинок",
+          filmTrailer: "Ссылка на трейлер",
+          filmType: "Тип фильма",
+          seoBlock: "SEO блок",
+        },
       },
     };
   },
   methods: {
-    addFilmCardFuture() {
-      const currentFilmCard = {
-        id: String(Date.now() * Math.random()),
-        image: require("@/assets/img/noimage.png"),
-      };
-
-      this.filmCardsFuture.push(currentFilmCard);
-    },
-
     deleteFilmCard(filmCard) {
       this.filmCards = this.filmCards.filter(
         (banner) => banner.id !== filmCard.id
@@ -191,6 +200,7 @@ export default {
       this.filmCardsFuture = this.filmCardsFuture.filter(
         (banner) => banner.id !== filmCardFuture.id
       );
+      database.ref("films/filmcardsfuture").set(this.filmCardsFuture);
     },
   },
   mounted() {

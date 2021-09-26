@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="col-md-2 mt-auto mb-auto">
-        <div class="font-weight-bold">Галерея картинок</div>
+        <div class="font-weight-bold">{{ title }}</div>
         <div>Размер: 1000х190</div>
       </div>
     </div>
@@ -47,6 +47,9 @@ export default {
       type: Array,
       require: true,
     },
+    titleProperty: {
+      type: String,
+    },
   },
   components: {
     Picture,
@@ -55,6 +58,7 @@ export default {
   data() {
     return {
       pictures: this.picturesGallery,
+      title: this.titleProperty,
     };
   },
   methods: {

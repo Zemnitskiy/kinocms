@@ -383,7 +383,7 @@ export default {
 
       database.ref("banners/backgroundbanner").set(this.backgroundBanner);
     },
-    saveTopBanners: function () {
+    saveTopBanners: async function () {
       //uploading images to firebase storage
       this.topBannerImgs.map(async (topBannerImg) => {
         if (

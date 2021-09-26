@@ -24,8 +24,8 @@
     <div class="row">
       <div class="col-6">
         <FilmName
-          :filmName.sync="newsData.newsName"
-          :titleProperty.sync="newsData.titles.newsName"
+          :filmName.sync="newsCard.newsName"
+          :titleProperty.sync="newsCard.titles.newsName"
         />
       </div>
       <div class="col-6">
@@ -47,22 +47,22 @@
     </div>
 
     <FilmDescription
-      :filmDescription.sync="newsData.newsDescription"
-      :titleProperty.sync="newsData.titles.newsDescription"
+      :filmDescription.sync="newsCard.newsDescription"
+      :titleProperty.sync="newsCard.titles.newsDescription"
     />
     <MainPicture
-      :mainPicture.sync="newsData.mainPicture"
-      :titleProperty.sync="newsData.titles.mainPicture"
+      :mainPicture.sync="newsCard.mainPicture"
+      :titleProperty.sync="newsCard.titles.mainPicture"
     />
     <PictureGallery
-      :picturesGallery.sync="newsData.newsGallery"
-      :titleProperty.sync="newsData.titles.newsGallery"
+      :picturesGallery.sync="newsCard.newsGallery"
+      :titleProperty.sync="newsCard.titles.newsGallery"
     />
     <FilmTrailer
-      :filmTrailer.sync="newsData.newsVideo"
-      :titleProperty.sync="newsData.titles.newsVideo"
+      :filmTrailer.sync="newsCard.newsVideo"
+      :titleProperty.sync="newsCard.titles.newsVideo"
     />
-    <SeoBlock :seoBlock.sync="newsData.seoBlock" />
+    <SeoBlock :seoBlock.sync="newsCard.seoBlock" />
     <FooterButtons @saveFilm="saveNewsToDb" />
   </div>
 </template>
@@ -78,17 +78,17 @@ import SeoBlock from "../pagefilms/SeoBlock";
 import FooterButtons from "../pagefilms/FooterButtons";
 // Datepicker
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
-// Firebase
+
 import firebase from "firebase";
 const database = firebase.database();
 
 export default {
   props: {
-    newsCard: {
+    newsData: {
       type: Object,
       required: true,
     },
-    newsCards: {
+    newsesData: {
       type: Array,
       required: true,
     },
@@ -104,12 +104,11 @@ export default {
     FooterButtons,
     DatePicker,
   },
-  name: "AddNews",
+  name: "EditNews",
   data() {
     return {
-      newsData: this.newsCard,
-      newsesData: this.newsCards,
-      // Datepicker config
+      newsCard: this.newsData,
+      // newsCards: this.newsesData,
       modelConfig: {
         type: "string",
         mask: "DD.MM.YYYY",
@@ -117,6 +116,9 @@ export default {
     };
   },
   computed: {
+    newsCards: function () {
+      return this.newsesData;
+    },
     date: {
       get: function () {
         return this.newsCard.newsDate;
@@ -129,8 +131,8 @@ export default {
   methods: {
     saveNewsToDb: async function () {
       //uploading picturesGallery to firebase storage
-      if (this.newsData.newsGallery) {
-        this.newsData.newsGallery.map(async (picture) => {
+      if (this.newsCard.newsGallery) {
+        this.newsCard.newsGallery.map(async (picture) => {
           if (
             !picture.image.includes("noimage") &&
             !picture.image.includes("firebasestorage")
@@ -153,8 +155,11 @@ export default {
       }
 
       //uploading mainPicture to firebase storage
-      if (!this.newsData.mainPicture.includes("noimage")) {
-        let blob = await fetch(this.newsData.mainPicture).then((res) => {
+      if (
+        !this.newsCard.mainPicture.includes("noimage") &&
+        !this.newsCard.mainPicture.includes("firebase")
+      ) {
+        let blob = await fetch(this.newsCard.mainPicture).then((res) => {
           return res.blob();
         });
 
@@ -162,17 +167,14 @@ export default {
           .storage()
           .ref(`images/${Date.now()}${blob.size}.jpg`);
 
-        this.newsData.mainPicture = await storageRef
+        this.newsCard.mainPicture = await storageRef
           .put(blob)
           .then(async function (snapshot) {
             return await snapshot.ref.getDownloadURL();
           });
       }
 
-      this.newsesData.push(this.newsData);
-
-      setTimeout(() => database.ref("newses/").set(this.newsesData), 5000);
-
+      database.ref("newses/").set(this.newsCards);
       this.$router.push({ name: "Pagenews" });
     },
     loadDefaults: function () {
