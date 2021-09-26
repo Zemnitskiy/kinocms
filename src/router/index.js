@@ -54,7 +54,19 @@ const routes = [
   {
     path: "/pagepromo",
     name: "Pagepromo",
-    component: () => import("@/components/pages/PagePromo.vue"),
+    component: () => import("@/components/pages/pagepromo/PagePromo.vue"),
+  },
+  {
+    path: "/addpromo/:id",
+    name: "AddPromo",
+    component: () => import("@/components/pages/pagepromo/AddPromo.vue"),
+    props: true,
+  },
+  {
+    path: "/editpromo/:id",
+    name: "EditPromo",
+    component: () => import("@/components/pages/pagepromo/EditPromo.vue"),
+    props: true,
   },
   {
     path: "/pageusers",
