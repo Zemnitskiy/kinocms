@@ -12,8 +12,11 @@
                   type="checkbox"
                   class="custom-control-input"
                   id="customSwitch1"
+                  v-model="topBannerSwitcher"
                 />
-                <label class="custom-control-label" for="customSwitch1"></label>
+                <label class="custom-control-label" for="customSwitch1">{{
+                  topBannerSwitcher ? "ВКЛ" : "ВЫКЛ"
+                }}</label>
               </div>
             </div>
           </div>
@@ -201,20 +204,6 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">На главной Новости Акции</h3>
-          <div class="card-tools">
-            <!-- Buttons, labels, and many other things can be placed here! -->
-            <div class="form-group mb-0">
-              <div class="custom-control custom-switch">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customSwitch1"
-                />
-                <label class="custom-control-label" for="customSwitch1"></label>
-              </div>
-            </div>
-          </div>
-          <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -336,6 +325,7 @@ export default {
         image: require("@/assets/img/noimage.png"),
         bannerMode: "Фото на фоне",
       },
+      topBannerSwitcher: true,
     };
   },
   methods: {

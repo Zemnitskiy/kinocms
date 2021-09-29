@@ -16,8 +16,32 @@ const routes = [
   },
   {
     path: "/pagecinemas",
-    name: "Pageinemas",
-    component: () => import("@/components/pages/PageCinemas.vue"),
+    name: "Pagecinemas",
+    component: () => import("@/components/pages/pagecinemas/PageCinemas.vue"),
+  },
+  {
+    path: "/addcinema/:id",
+    name: "AddCinema",
+    component: () => import("@/components/pages/pagecinemas/AddCinema.vue"),
+    props: true,
+  },
+  {
+    path: "/editcinema/:id",
+    name: "EditCinema",
+    component: () => import("@/components/pages/pagecinemas/EditCinema.vue"),
+    props: true,
+  },
+  {
+    path: "/addhall/:id",
+    name: "AddHall",
+    component: () => import("@/components/pages/pagecinemas/AddHall.vue"),
+    props: true,
+  },
+  {
+    path: "/edithall/:id",
+    name: "EditHall",
+    component: () => import("@/components/pages/pagecinemas/EditHall.vue"),
+    props: true,
   },
   {
     path: "/pagefilms",

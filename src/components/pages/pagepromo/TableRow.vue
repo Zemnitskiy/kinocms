@@ -45,7 +45,7 @@ export default {
   methods: {
     editPromo: function () {
       return this.$router.push({
-        name: "EditPromogir",
+        name: "EditPromo",
         params: {
           id: this.promoData.id,
           promoData: this.promoData,
