@@ -115,12 +115,10 @@ export default {
 
       this.filmsData.push(this.filmData);
 
-      setTimeout(
-        () => database.ref("films/filmcardsfuture/").set(this.filmsData),
-        5000
-      );
-
-      this.$router.push({ name: "Pagefilms" });
+      setTimeout(() => {
+        database.ref("films/filmcardsfuture/").set(this.filmsData);
+        this.$router.push({ name: "Pagefilms" });
+      }, 5000);
     },
     loadDefaults: function () {
       return this.defaultFilm;

@@ -1,11 +1,26 @@
 <template>
   <div class="container">
     <LangSwitcher :language.sync="filmCard.language" />
-    <FilmName :filmName.sync="filmCard.filmName" />
-    <FilmDescription :filmDescription.sync="filmCard.filmDescription" />
-    <MainPicture :mainPicture.sync="filmCard.mainPicture" />
-    <PictureGallery :picturesGallery.sync="filmCard.picturesGallery" />
-    <FilmTrailer :filmTrailer.sync="filmCard.filmTrailer" />
+    <FilmName
+      :filmName.sync="filmCard.filmName"
+      :titleProperty.sync="filmCard.titles.filmName"
+    />
+    <FilmDescription
+      :filmDescription.sync="filmCard.filmDescription"
+      :titleProperty.sync="filmCard.titles.filmDescription"
+    />
+    <MainPicture
+      :mainPicture.sync="filmCard.mainPicture"
+      :titleProperty.sync="filmCard.titles.mainPicture"
+    />
+    <PictureGallery
+      :picturesGallery.sync="filmCard.picturesGallery"
+      :titleProperty.sync="filmCard.titles.picturesGallery"
+    />
+    <FilmTrailer
+      :filmTrailer.sync="filmCard.filmTrailer"
+      :titleProperty.sync="filmCard.titles.filmTrailer"
+    />
     <FilmType :filmType.sync="filmCard.filmType" />
     <SeoBlock :seoBlock.sync="filmCard.seoBlock" />
     <FooterButtons @saveFilm="saveFilmToDb" />
@@ -48,7 +63,7 @@ export default {
     SeoBlock,
     FooterButtons,
   },
-  name: "EditFilm",
+  name: "EditFilmFuture",
   data() {
     return {
       filmCard: this.filmData,
@@ -58,8 +73,8 @@ export default {
   methods: {
     saveFilmToDb: async function () {
       //uploading picturesGallery to firebase storage
-      if (this.filmData.picturesGallery) {
-        this.filmData.picturesGallery.map(async (picture) => {
+      if (this.filmCard.picturesGallery) {
+        this.filmCard.picturesGallery.map(async (picture) => {
           if (
             !picture.image.includes("noimage") &&
             !picture.image.includes("firebasestorage")
@@ -82,8 +97,8 @@ export default {
       }
 
       //uploading mainPicture to firebase storage
-      if (!this.filmData.mainPicture.includes("noimage")) {
-        let blob = await fetch(this.filmData.mainPicture).then((res) => {
+      if (!this.filmCard.mainPicture.includes("noimage")) {
+        let blob = await fetch(this.filmCard.mainPicture).then((res) => {
           return res.blob();
         });
 
@@ -91,19 +106,17 @@ export default {
           .storage()
           .ref(`images/${Date.now()}${blob.size}.jpg`);
 
-        this.filmData.mainPicture = await storageRef
+        this.filmCard.mainPicture = await storageRef
           .put(blob)
           .then(async function (snapshot) {
             return await snapshot.ref.getDownloadURL();
           });
       }
 
-      setTimeout(
-        () => database.ref("films/filmcards/").set(this.filmCards),
-        5000
-      );
-
-      this.$router.push({ name: "Pagefilms" });
+      setTimeout(() => {
+        database.ref("films/filmcardsfuture/").set(this.filmCards);
+        this.$router.push({ name: "Pagefilms" });
+      }, 5000);
     },
     loadDefaults: function () {
       return this.defaultFilm;

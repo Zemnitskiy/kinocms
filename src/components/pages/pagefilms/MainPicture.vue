@@ -71,10 +71,10 @@ export default {
 
       this.$emit("update:mainPicture", this.picture);
     },
-    deleteMainPicture: function () {
+    deleteMainPicture: async function () {
       const storageRef = firebase.storage();
       let desertRef = storageRef.refFromURL(this.picture);
-      desertRef.delete();
+      await desertRef.delete();
 
       this.picture = require("@/assets/img/noimage.png");
 

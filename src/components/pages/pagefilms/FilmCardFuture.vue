@@ -49,7 +49,7 @@ export default {
     },
     editFilm() {
       return this.$router.push({
-        name: "EditFilm",
+        name: "EditFilmFuture",
         params: {
           id: this.filmData.id,
           filmData: this.filmData,
