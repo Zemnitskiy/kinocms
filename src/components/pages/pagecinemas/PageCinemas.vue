@@ -86,29 +86,6 @@ export default {
           seoTitle: "",
           seoKeywords: "",
         },
-        hallCard: {
-          id: String(Date.now() * Math.floor(Math.random() + 1)),
-          language: "ukr",
-          hallNumber: "",
-          hallDescription: "",
-          hallSchema: require("@/assets/img/noimage.png"),
-          mainPicture: require("@/assets/img/noimage.png"),
-          picturesGallery: [{}],
-          seoBlock: {
-            seoUrl: "",
-            seoTitle: "",
-            seoKeywords: "",
-          },
-          hallDate: "12.12.12",
-          titles: {
-            hallNumber: "Номер зала",
-            hallDescription: "Описание зала",
-            hallSchema: "Схема зала",
-            mainPicture: "Верхний баннер",
-            picturesGallery: "Галерея картинок",
-            seoBlock: "SEO блок",
-          },
-        },
         hallCards: [],
         titles: {
           cinemaName: "Название кинотеатра",
@@ -131,12 +108,16 @@ export default {
     },
   },
   mounted() {
-    database.ref("cinemas/cinemacards").on("value", (snapshot) => {
-      if (snapshot.val() != null) {
-        this.cinemaCards = snapshot.val();
-      } else {
-        this.cinemaCards = [];
-      }
+    this.$nextTick(function () {
+      // Код, который будет запущен только после
+      // отображения всех представлений
+      database.ref("cinemas/cinemacards").once("value", (snapshot) => {
+        if (snapshot.val() != null) {
+          this.cinemaCards = snapshot.val();
+        } else {
+          this.cinemaCards = [];
+        }
+      });
     });
   },
 };

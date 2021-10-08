@@ -34,12 +34,17 @@ export default {
   data() {
     return {
       promoData: this.promoCard,
-      // newsesData: this.newsCards,
+      promos: [],
     };
   },
   computed: {
-    promosData: function () {
-      return this.promoCards;
+    promosData: {
+      get: function () {
+        return this.promoCards;
+      },
+      set: function () {
+        this.promos;
+      },
     },
   },
   methods: {
@@ -54,10 +59,12 @@ export default {
       });
     },
     deletePromoCard: function () {
-      let promos = this.promosData;
-      promos = promos.filter((promo) => promo.id !== this.promoData.id);
+      this.promos = this.promosData;
+      this.promos = this.promos.filter(
+        (promo) => promo.id !== this.promoData.id
+      );
 
-      database.ref("newses/").set(promos);
+      database.ref("promos/").set(this.promos);
     },
   },
 };

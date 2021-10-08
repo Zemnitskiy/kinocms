@@ -13,9 +13,11 @@
       :filmDescription.sync="cinemaData.cinemaConditions"
       :titleProperty.sync="cinemaData.titles.cinemaConditions"
     />
-    <MainPicture
+    <MainPictureLogo
       :mainPicture.sync="cinemaData.cinemaLogo"
       :titleProperty.sync="cinemaData.titles.cinemaLogo"
+      :id="`mainpicturelogo`"
+      :for="`mainpicturelogo`"
     />
     <MainPicture
       :mainPicture.sync="cinemaData.mainPicture"
@@ -26,8 +28,9 @@
       :titleProperty.sync="cinemaData.titles.picturesGallery"
     />
     <HallTable
-      :hallData="cinemaData.hallCard"
-      :hallsData="cinemasData.hallCards"
+      :hallsData="cinemaData.hallCards"
+      :cinemaData="cinemaData"
+      :cinemasData="cinemasData"
     />
     <SeoBlock :seoBlock.sync="cinemaData.seoBlock" />
 
@@ -40,6 +43,7 @@ import LangSwitcher from "../pagefilms/LangSwitcher";
 import FilmName from "../pagefilms/FilmName";
 import FilmDescription from "../pagefilms/FilmDescription";
 import MainPicture from "../pagefilms/MainPicture";
+import MainPictureLogo from "../pagefilms/MainPictureLogo";
 import PictureGallery from "../pagefilms/PictureGallery";
 import SeoBlock from "../pagefilms/SeoBlock";
 import FooterButtons from "../pagefilms/FooterButtons";
@@ -65,6 +69,7 @@ export default {
     FilmName,
     FilmDescription,
     MainPicture,
+    MainPictureLogo,
     PictureGallery,
     SeoBlock,
     FooterButtons,
@@ -114,6 +119,23 @@ export default {
           .ref(`images/${Date.now()}${blob.size}.jpg`);
 
         this.cinemaData.mainPicture = await storageRef
+          .put(blob)
+          .then(async function (snapshot) {
+            return await snapshot.ref.getDownloadURL();
+          });
+      }
+
+      //uploading cinemaLogo to firebase storage
+      if (!this.cinemaData.cinemaLogo.includes("noimage")) {
+        let blob = await fetch(this.cinemaData.cinemaLogo).then((res) => {
+          return res.blob();
+        });
+
+        const storageRef = firebase
+          .storage()
+          .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+        this.cinemaData.cinemaLogo = await storageRef
           .put(blob)
           .then(async function (snapshot) {
             return await snapshot.ref.getDownloadURL();

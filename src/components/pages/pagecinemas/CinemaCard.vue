@@ -54,8 +54,8 @@ export default {
         name: "EditCinema",
         params: {
           id: this.cinemaData.id,
-          cinemaData: this.cinemaData,
-          cinemasData: this.cinemasData,
+          cinemaCard: this.cinemaData,
+          cinemaCards: this.cinemasData,
         },
       });
     },

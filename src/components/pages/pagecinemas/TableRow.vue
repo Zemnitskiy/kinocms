@@ -12,9 +12,8 @@
 </template>
 
 <script>
-import firebase from "firebase";
-
-const database = firebase.database();
+// import firebase from "firebase";
+// const database = firebase.database();
 
 export default {
   name: "TableRow",
@@ -27,17 +26,22 @@ export default {
       type: Array,
       required: true,
     },
+    cinemaData: {
+      type: Object,
+      required: true,
+    },
+    cinemasData: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       hallData: this.hallCard,
-      // newsesData: this.newsCards,
+      hallsData: this.hallCards,
+      cinemaCards: this.cinemasData,
+      cinemaCard: this.cinemaData,
     };
-  },
-  computed: {
-    hallsData: function () {
-      return this.hallCards;
-    },
   },
   methods: {
     editHall: function () {
@@ -47,14 +51,24 @@ export default {
           id: this.hallData.id,
           hallData: this.hallData,
           hallsData: this.hallsData,
+          cinemaData: this.cinemaData,
+          cinemasData: this.cinemasData,
         },
       });
     },
     deleteHallCard: function () {
-      let halls = this.hallsData;
-      halls = halls.filter((hall) => hall.id !== this.hallData.id);
+      // let halls = this.hallsData;
 
-      database.ref("cinemas/halls/").set(halls);
+      // halls = halls.filter((hall) => hall.id !== this.hallData.id);
+      // console.log("halls = ", halls);
+      // this.hallsData = halls;
+      // console.log("this.hallsData = ", this.hallsData);
+      // let path = `/cinemas/cinemacards/${this.cinemaCards.indexOf(
+      //   this.cinemaCard
+      // )}/hallCards/`;
+
+      // database.ref(path).set(this.hallsData);
+      this.$emit("deleteHallCard", this.hallData);
     },
   },
 };

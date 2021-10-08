@@ -5,7 +5,7 @@
     <td>{{ newsData.newsStatus ? "ВКЛ" : "ВЫКЛ" }}</td>
     <td class="d-flex">
       <a class="mr-3 text-dark" @click="editNews"><i class="fas fa-pen"></i></a>
-      <a class="text-dark" @click="deleteFilmCard"
+      <a class="text-dark" @click="deleteNewsCard"
         ><i class="fas fa-trash"></i
       ></a>
     </td>
@@ -32,13 +32,8 @@ export default {
   data() {
     return {
       newsData: this.newsCard,
-      // newsesData: this.newsCards,
+      newsesData: this.newsCards,
     };
-  },
-  computed: {
-    newsesData: function () {
-      return this.newsCards;
-    },
   },
   methods: {
     editNews: function () {
@@ -51,7 +46,7 @@ export default {
         },
       });
     },
-    deleteFilmCard: function () {
+    deleteNewsCard: function () {
       let newses = this.newsesData;
       newses = newses.filter((news) => news.id !== this.newsData.id);
 

@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header d-flex justify-content-center">
-          <h3 class="card-title text-bold">Список новостей</h3>
+          <h3 class="card-title text-bold">Список акций</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body d-flex flex-column">

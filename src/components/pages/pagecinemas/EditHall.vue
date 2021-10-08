@@ -1,31 +1,12 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-8 d-flex justify-content-end align-items-center">
-        <div class="form-group mb-0">
-          <div class="custom-control custom-switch">
-            <input
-              type="checkbox"
-              class="custom-control-input"
-              id="customSwitch1"
-              v-model="promoCard.newsStatus"
-            />
-            <label class="custom-control-label" for="customSwitch1">{{
-              promoCard.newsStatus ? "ВКЛ" : "ВЫКЛ"
-            }}</label>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <LangSwitcher :language.sync="promoCard.language" />
-      </div>
-    </div>
+    <LangSwitcher :language.sync="hallCard.language" />
 
     <div class="row">
       <div class="col-6">
         <FilmName
-          :filmName.sync="promoCard.newsName"
-          :titleProperty.sync="promoCard.titles.newsName"
+          :filmName.sync="hallCard.hallNumber"
+          :titleProperty.sync="hallCard.titles.hallNumber"
         />
       </div>
       <div class="col-6">
@@ -47,23 +28,25 @@
     </div>
 
     <FilmDescription
-      :filmDescription.sync="promoCard.newsDescription"
-      :titleProperty.sync="promoCard.titles.newsDescription"
+      :filmDescription.sync="hallCard.hallDescription"
+      :titleProperty.sync="hallCard.titles.hallDescription"
+    />
+    <MainPictureLogo
+      :mainPicture.sync="hallCard.hallSchema"
+      :titleProperty.sync="hallCard.titles.hallSchema"
+      :id="`mainpicturelogo`"
+      :for="`mainpicturelogo`"
     />
     <MainPicture
-      :mainPicture.sync="promoCard.mainPicture"
-      :titleProperty.sync="promoCard.titles.mainPicture"
+      :mainPicture.sync="hallCard.mainPicture"
+      :titleProperty.sync="hallCard.titles.mainPicture"
     />
     <PictureGallery
-      :picturesGallery.sync="promoCard.newsGallery"
-      :titleProperty.sync="promoCard.titles.newsGallery"
+      :picturesGallery.sync="hallCard.picturesGallery"
+      :titleProperty.sync="hallCard.titles.picturesGallery"
     />
-    <FilmTrailer
-      :filmTrailer.sync="promoCard.newsVideo"
-      :titleProperty.sync="promoCard.titles.newsVideo"
-    />
-    <SeoBlock :seoBlock.sync="promoCard.seoBlock" />
-    <FooterButtons @saveFilm="savePromoToDb" />
+    <SeoBlock :seoBlock.sync="hallCard.seoBlock" />
+    <FooterButtons @saveFilm="saveHallToDb" />
   </div>
 </template>
 
@@ -71,24 +54,33 @@
 import LangSwitcher from "../pagefilms/LangSwitcher";
 import FilmName from "../pagefilms/FilmName";
 import FilmDescription from "../pagefilms/FilmDescription";
+import MainPictureLogo from "../pagefilms/MainPictureLogo";
 import MainPicture from "../pagefilms/MainPicture";
 import PictureGallery from "../pagefilms/PictureGallery";
-import FilmTrailer from "../pagefilms/FilmTrailer";
 import SeoBlock from "../pagefilms/SeoBlock";
 import FooterButtons from "../pagefilms/FooterButtons";
 // Datepicker
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
+// Firebase
 import firebase from "firebase";
-const database = firebase.database();
+// const database = firebase.database();
 
 export default {
   props: {
-    promoData: {
+    hallData: {
       type: Object,
       required: true,
     },
-    promosData: {
+    hallsData: {
+      type: Array,
+      required: true,
+    },
+    cinemaData: {
+      type: Object,
+      required: true,
+    },
+    cinemasData: {
       type: Array,
       required: true,
     },
@@ -98,17 +90,19 @@ export default {
     FilmName,
     FilmDescription,
     MainPicture,
+    MainPictureLogo,
     PictureGallery,
-    FilmTrailer,
     SeoBlock,
     FooterButtons,
     DatePicker,
   },
-  name: "EditPromo",
+  name: "EditHall",
   data() {
     return {
-      promoCard: this.promoData,
-      // newsCards: this.newsesData,
+      hallCard: this.hallData,
+      hallCards: this.hallsData,
+      cinemaCard: this.cinemaData,
+      // Datepicker config
       modelConfig: {
         type: "string",
         mask: "DD.MM.YYYY",
@@ -116,23 +110,20 @@ export default {
     };
   },
   computed: {
-    promoCards: function () {
-      return this.promosData;
-    },
     date: {
       get: function () {
-        return this.promoCard.newsDate;
+        return this.hallData.hallDate;
       },
       set: function (newDate) {
-        this.promoData.newsDate = newDate;
+        this.hallCard.hallDate = newDate;
       },
     },
   },
   methods: {
-    savePromoToDb: async function () {
+    saveHallToDb: async function () {
       //uploading picturesGallery to firebase storage
-      if (this.promoCard.newsGallery) {
-        this.promoCard.newsGallery.map(async (picture) => {
+      if (this.hallCard.newsGallery) {
+        this.hallCard.newsGallery.map(async (picture) => {
           if (
             !picture.image.includes("noimage") &&
             !picture.image.includes("firebasestorage")
@@ -156,10 +147,10 @@ export default {
 
       //uploading mainPicture to firebase storage
       if (
-        !this.promoCard.mainPicture.includes("noimage") &&
-        !this.promoCard.mainPicture.includes("firebase")
+        !this.hallCard.mainPicture.includes("noimage") &&
+        !this.hallCard.mainPicture.includes("firebasestorage")
       ) {
-        let blob = await fetch(this.promoCard.mainPicture).then((res) => {
+        let blob = await fetch(this.hallCard.mainPicture).then((res) => {
           return res.blob();
         });
 
@@ -167,19 +158,40 @@ export default {
           .storage()
           .ref(`images/${Date.now()}${blob.size}.jpg`);
 
-        this.promoCard.mainPicture = await storageRef
+        this.hallCard.mainPicture = await storageRef
           .put(blob)
           .then(async function (snapshot) {
             return await snapshot.ref.getDownloadURL();
           });
       }
 
-      database.ref("promos/").set(this.promoCards);
-      this.$router.push({ name: "Pagepromo" });
+      //uploading hallSchema to firebase storage
+      if (
+        !this.hallCard.hallSchema.includes("noimage") &&
+        !this.hallCard.mainPicture.includes("firebasestorage")
+      ) {
+        let blob = await fetch(this.hallCard.hallSchema).then((res) => {
+          return res.blob();
+        });
+
+        const storageRef = firebase
+          .storage()
+          .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+        this.hallCard.hallSchema = await storageRef
+          .put(blob)
+          .then(async function (snapshot) {
+            return await snapshot.ref.getDownloadURL();
+          });
+      }
+
+      this.$router.go(-1);
     },
-    loadDefaults: function () {
-      return this.defaultFilm;
-    },
+  },
+  beforeRouteLeave(to, from, next) {
+    to.params.cinemaCard = this.cinemaCard;
+    to.params.cinemaCards = this.cinemasData;
+    next();
   },
 };
 </script>

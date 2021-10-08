@@ -19,8 +19,11 @@
               <TableRow
                 v-for="hallCard in hallCards"
                 :key="hallCard.id"
-                :hallCard="promhallCardoCard"
+                :hallCard="hallCard"
                 :hallCards="hallCards"
+                :cinemaData="cinemaCard"
+                :cinemasData="cinemaCards"
+                @deleteHallCard="deleteHallCard"
               />
             </tbody>
           </table>
@@ -36,16 +39,23 @@
 </template>
 
 <script>
+import firebase from "firebase";
+const database = firebase.database();
+
 import CreateHallButton from "./CreateHallButton";
 import TableRow from "./TableRow";
 
 export default {
   props: {
-    hallData: {
+    hallsData: {
+      type: Array,
+      required: true,
+    },
+    cinemaData: {
       type: Object,
       required: true,
     },
-    hallsData: {
+    cinemasData: {
       type: Array,
       required: true,
     },
@@ -57,16 +67,39 @@ export default {
   name: "HallTable",
   data() {
     return {
-      hallCard: this.hallData,
-      // promoCards: this.newses,
+      hallCard: {
+        id: String(Date.now() * Math.floor(Math.random() + 1)),
+        language: "ukr",
+        hallNumber: "",
+        hallDescription: "",
+        hallSchema: require("@/assets/img/noimage.png"),
+        mainPicture: require("@/assets/img/noimage.png"),
+        picturesGallery: [{}],
+        seoBlock: {
+          seoUrl: "",
+          seoTitle: "",
+          seoKeywords: "",
+        },
+        hallDate: "12.12.12",
+        titles: {
+          hallNumber: "Номер зала",
+          hallDescription: "Описание зала",
+          hallSchema: "Схема зала",
+          mainPicture: "Верхний баннер",
+          picturesGallery: "Галерея картинок",
+          seoBlock: "SEO блок",
+        },
+      },
+      hallCards: this.hallsData,
+      cinemaCard: this.cinemaData,
+      cinemaCards: this.cinemasData,
     };
   },
-  computed: {
-    // Проблема с обновлением свойства из props, сделал вычисляемым
-    hallCards: function () {
-      return this.hallsData;
-    },
-  },
+  // computed: {
+  //   hallCards: function () {
+  //     return this.hallsData;
+  //   },
+  // },
   methods: {
     addHall: function () {
       return this.$router.push({
@@ -75,8 +108,24 @@ export default {
           id: this.hallCard.id,
           hallCard: this.hallCard,
           hallCards: this.hallCards,
+          cinemaData: this.cinemaCard,
+          cinemasData: this.cinemaCards,
         },
       });
+    },
+    deleteHallCard: function (payload) {
+      let halls = this.hallsData;
+
+      halls = halls.filter((hall) => hall.id !== payload.id);
+      console.log("halls = ", halls);
+      this.hallCards = halls;
+      this.cinemaCards[this.cinemaCards.indexOf(this.cinemaCard)].hallCards =
+        halls;
+      // let path = `/cinemas/cinemacards/${this.cinemasData.indexOf(
+      //   this.cinemaData
+      // )}/hallCards/`;
+
+      database.ref("/cinemas/cinemacards/").set(this.cinemaCards);
     },
   },
 };

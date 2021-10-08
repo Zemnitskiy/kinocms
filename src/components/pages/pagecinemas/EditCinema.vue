@@ -1,69 +1,40 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-8 d-flex justify-content-end align-items-center">
-        <div class="form-group mb-0">
-          <div class="custom-control custom-switch">
-            <input
-              type="checkbox"
-              class="custom-control-input"
-              id="customSwitch1"
-              v-model="promoCard.newsStatus"
-            />
-            <label class="custom-control-label" for="customSwitch1">{{
-              promoCard.newsStatus ? "ВКЛ" : "ВЫКЛ"
-            }}</label>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <LangSwitcher :language.sync="promoCard.language" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FilmName
-          :filmName.sync="promoCard.newsName"
-          :titleProperty.sync="promoCard.titles.newsName"
-        />
-      </div>
-      <div class="col-6">
-        <DatePicker
-          v-slot="{ inputValue, inputEvents }"
-          v-model="date"
-          :model-config="modelConfig"
-          is-required
-        >
-          <template>
-            <input
-              class="bg-white border px-2 py-1 rounded"
-              :value="inputValue"
-              v-on="inputEvents"
-            />
-          </template>
-        </DatePicker>
-      </div>
-    </div>
-
+    <LangSwitcher :language.sync="cinemaData.language" />
+    <FilmName
+      :filmName.sync="cinemaData.cinemaName"
+      :titleProperty.sync="cinemaData.titles.cinemaName"
+    />
     <FilmDescription
-      :filmDescription.sync="promoCard.newsDescription"
-      :titleProperty.sync="promoCard.titles.newsDescription"
+      :filmDescription.sync="cinemaData.cinemaDescription"
+      :titleProperty.sync="cinemaData.titles.cinemaDescription"
+    />
+    <FilmDescription
+      :filmDescription.sync="cinemaData.cinemaConditions"
+      :titleProperty.sync="cinemaData.titles.cinemaConditions"
+    />
+    <MainPictureLogo
+      :mainPicture.sync="cinemaData.cinemaLogo"
+      :titleProperty.sync="cinemaData.titles.cinemaLogo"
+      :id="`mainpicturelogo`"
+      :for="`mainpicturelogo`"
     />
     <MainPicture
-      :mainPicture.sync="promoCard.mainPicture"
-      :titleProperty.sync="promoCard.titles.mainPicture"
+      :mainPicture.sync="cinemaData.mainPicture"
+      :titleProperty.sync="cinemaData.titles.mainPicture"
     />
     <PictureGallery
-      :picturesGallery.sync="promoCard.newsGallery"
-      :titleProperty.sync="promoCard.titles.newsGallery"
+      :picturesGallery.sync="cinemaData.picturesGallery"
+      :titleProperty.sync="cinemaData.titles.picturesGallery"
     />
-    <FilmTrailer
-      :filmTrailer.sync="promoCard.newsVideo"
-      :titleProperty.sync="promoCard.titles.newsVideo"
+    <HallTable
+      :hallsData="cinemaData.hallCards"
+      :cinemaData="cinemaData"
+      :cinemasData="cinemasData"
     />
-    <SeoBlock :seoBlock.sync="promoCard.seoBlock" />
-    <FooterButtons @saveFilm="savePromoToDb" />
+    <SeoBlock :seoBlock.sync="cinemaCard.seoBlock" />
+
+    <FooterButtons @saveFilm="saveCinemaToDb" />
   </div>
 </template>
 
@@ -72,23 +43,23 @@ import LangSwitcher from "../pagefilms/LangSwitcher";
 import FilmName from "../pagefilms/FilmName";
 import FilmDescription from "../pagefilms/FilmDescription";
 import MainPicture from "../pagefilms/MainPicture";
+import MainPictureLogo from "../pagefilms/MainPictureLogo";
 import PictureGallery from "../pagefilms/PictureGallery";
-import FilmTrailer from "../pagefilms/FilmTrailer";
 import SeoBlock from "../pagefilms/SeoBlock";
 import FooterButtons from "../pagefilms/FooterButtons";
-// Datepicker
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
+// Hall components
+import HallTable from "./HallTable";
 
 import firebase from "firebase";
 const database = firebase.database();
 
 export default {
   props: {
-    promoData: {
+    cinemaCard: {
       type: Object,
       required: true,
     },
-    promosData: {
+    cinemaCards: {
       type: Array,
       required: true,
     },
@@ -99,40 +70,23 @@ export default {
     FilmDescription,
     MainPicture,
     PictureGallery,
-    FilmTrailer,
+    MainPictureLogo,
     SeoBlock,
     FooterButtons,
-    DatePicker,
+    HallTable,
   },
-  name: "EditPromo",
+  name: "EditCinema",
   data() {
     return {
-      promoCard: this.promoData,
-      // newsCards: this.newsesData,
-      modelConfig: {
-        type: "string",
-        mask: "DD.MM.YYYY",
-      },
+      cinemaData: this.cinemaCard,
+      cinemasData: this.cinemaCards,
     };
   },
-  computed: {
-    promoCards: function () {
-      return this.promosData;
-    },
-    date: {
-      get: function () {
-        return this.promoCard.newsDate;
-      },
-      set: function (newDate) {
-        this.promoData.newsDate = newDate;
-      },
-    },
-  },
   methods: {
-    savePromoToDb: async function () {
+    saveCinemaToDb: async function () {
       //uploading picturesGallery to firebase storage
-      if (this.promoCard.newsGallery) {
-        this.promoCard.newsGallery.map(async (picture) => {
+      if (this.cinemaData.picturesGallery) {
+        this.cinemaData.picturesGallery.map(async (picture) => {
           if (
             !picture.image.includes("noimage") &&
             !picture.image.includes("firebasestorage")
@@ -156,10 +110,10 @@ export default {
 
       //uploading mainPicture to firebase storage
       if (
-        !this.promoCard.mainPicture.includes("noimage") &&
-        !this.promoCard.mainPicture.includes("firebase")
+        !this.cinemaData.mainPicture.includes("noimage") &&
+        !this.cinemaData.mainPicture.includes("firebasestorage")
       ) {
-        let blob = await fetch(this.promoCard.mainPicture).then((res) => {
+        let blob = await fetch(this.cinemaData.mainPicture).then((res) => {
           return res.blob();
         });
 
@@ -167,18 +121,37 @@ export default {
           .storage()
           .ref(`images/${Date.now()}${blob.size}.jpg`);
 
-        this.promoCard.mainPicture = await storageRef
+        this.cinemaData.mainPicture = await storageRef
           .put(blob)
           .then(async function (snapshot) {
             return await snapshot.ref.getDownloadURL();
           });
       }
 
-      database.ref("promos/").set(this.promoCards);
-      this.$router.push({ name: "Pagepromo" });
-    },
-    loadDefaults: function () {
-      return this.defaultFilm;
+      //uploading cinemaLogo to firebase storage
+      if (
+        !this.cinemaData.cinemaLogo.includes("noimage") &&
+        !this.cinemaData.cinemaLogo.includes("firebasestorage")
+      ) {
+        let blob = await fetch(this.cinemaData.cinemaLogo).then((res) => {
+          return res.blob();
+        });
+
+        const storageRef = firebase
+          .storage()
+          .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+        this.cinemaData.cinemaLogo = await storageRef
+          .put(blob)
+          .then(async function (snapshot) {
+            return await snapshot.ref.getDownloadURL();
+          });
+      }
+
+      setTimeout(() => {
+        database.ref("cinemas/cinemacards/").set(this.cinemasData);
+        this.$router.push({ name: "Pagecinemas" });
+      }, 5000);
     },
   },
 };
