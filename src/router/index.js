@@ -73,7 +73,19 @@ const routes = [
   {
     path: "/pagepages",
     name: "Pagepages",
-    component: () => import("@/components/pages/PagePages.vue"),
+    component: () => import("@/components/pages/pagepages/PagePages.vue"),
+  },
+  {
+    path: "/addpage/:id",
+    name: "AddPage",
+    component: () => import("@/components/pages/pagepages/AddPage.vue"),
+    props: true,
+  },
+  {
+    path: "/editpage/:id",
+    name: "EditPage",
+    component: () => import("@/components/pages/pagepages/EditPage.vue"),
+    props: true,
   },
   {
     path: "/pagepromo",
