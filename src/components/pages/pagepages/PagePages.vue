@@ -17,7 +17,7 @@ export default {
     return {
       pages: [
         {
-          id: String(Date.now() * Math.floor(Math.random() + 1)),
+          id: "1",
           pageStatus: true,
           language: "ukr",
           phones: {
@@ -30,16 +30,19 @@ export default {
             placeholder: "текст",
           },
           pageName: {
-            isRequired: false,
-            placeholder: "Название",
+            isRequired: true,
+            placeholder: "Главная страница",
           },
           mainPicture: {
             isRequired: false,
             image: require("@/assets/img/noimage.png"),
           },
-          picturesGallery: {
+          pageGallery: {
             isRequired: false,
             gallery: [{}],
+          },
+          contacts: {
+            isRequired: false,
           },
           seoBlock: {
             seoUrl: "",
@@ -47,6 +50,316 @@ export default {
             seoKeywords: "",
           },
           isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "2",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: true,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: true,
+            placeholder: "О кинотеатре",
+          },
+          mainPicture: {
+            isRequired: true,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: true,
+            gallery: [{ image: require("@/assets/img/noimage.png") }],
+          },
+          contacts: {
+            isRequired: false,
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "3",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: true,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: true,
+            placeholder: "Кафе-бар",
+          },
+          mainPicture: {
+            isRequired: true,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: true,
+            gallery: [{ image: require("@/assets/img/noimage.png") }],
+          },
+          contacts: {
+            isRequired: false,
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "4",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: true,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: true,
+            placeholder: "Vip-зал",
+          },
+          mainPicture: {
+            isRequired: true,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: true,
+            gallery: [{ image: require("@/assets/img/noimage.png") }],
+          },
+          contacts: {
+            isRequired: false,
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "5",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: true,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: true,
+            placeholder: "Реклама",
+          },
+          mainPicture: {
+            isRequired: true,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: true,
+            gallery: [{ image: require("@/assets/img/noimage.png") }],
+          },
+          contacts: {
+            isRequired: false,
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "6",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: true,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: true,
+            placeholder: "Детская комната",
+          },
+          mainPicture: {
+            isRequired: true,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: true,
+            gallery: [{ image: require("@/assets/img/noimage.png") }],
+          },
+          contacts: {
+            isRequired: false,
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
+        },
+        {
+          id: "7",
+          pageStatus: true,
+          language: "ukr",
+          phones: {
+            isRequired: false,
+            phone1: "777 85 98",
+            phone2: "777 85 98",
+          },
+          pageDescription: {
+            isRequired: false,
+            placeholder: "текст",
+          },
+          pageName: {
+            isRequired: false,
+            placeholder: "Контакты",
+          },
+          mainPicture: {
+            isRequired: false,
+            image: require("@/assets/img/noimage.png"),
+          },
+          pageGallery: {
+            isRequired: false,
+            gallery: [{}],
+          },
+          contacts: {
+            isRequired: true,
+            contactCard: {
+              id: String(Date.now() * Math.floor(Math.random() + 1)),
+              contactStatus: false,
+              cinemaName: "Название кинотеатра",
+              cinemaDescription: "",
+              cinemaGeoposition: "",
+              mainPicture: {
+                isRequired: true,
+                image: require("@/assets/img/noimage.png"),
+              },
+              titles: {
+                cinemaName: "Название кинотеатра",
+                cinemaDescription: "Адрес",
+                cinemaGeoposition: "Координаты для карты",
+                mainPicture: "Лого",
+              },
+            },
+            contactCards: [
+              {
+                id: String(Date.now() * Math.floor(Math.random() + 1)),
+                contactStatus: false,
+                cinemaName: "",
+                cinemaDescription: "",
+                cinemaGeoposition: "",
+                mainPicture: {
+                  isRequired: true,
+                  image: require("@/assets/img/noimage.png"),
+                },
+                titles: {
+                  cinemaName: "Название кинотеатра",
+                  cinemaDescription: "Адрес",
+                  cinemaGeoposition: "Координаты для карты",
+                  mainPicture: "Лого",
+                },
+                isSwitched: false,
+              },
+            ],
+          },
+          seoBlock: {
+            seoUrl: "",
+            seoTitle: "",
+            seoKeywords: "",
+          },
+          isRemovable: false,
+          titles: {
+            pageName: "Название страницы",
+            phones: "Телефон",
+            pageDescription: "Описание",
+            mainPicture: "Главная картинка",
+            pageGallery: "Галерея картинок",
+            seoBlock: "SEO блок",
+          },
+          pageDate: "21.09.2021",
         },
       ],
       page: {
@@ -88,6 +401,9 @@ export default {
           seoBlock: "SEO блок",
         },
         pageDate: "2021.09.21",
+        contacts: {
+          isRequired: false,
+        },
       },
       loaded: false,
     };
@@ -99,7 +415,7 @@ export default {
         this.pages = await snapshot.val();
         this.loaded = true;
       } else {
-        this.pages = [];
+        this.pages;
         this.loaded = true;
       }
     });

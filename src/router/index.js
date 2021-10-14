@@ -133,6 +133,11 @@ const routes = [
     component: () => import("@/components/pages/pagefilms/EditFilmFuture.vue"),
     props: true,
   },
+  {
+    path: "/pageschedule",
+    name: "Pageschedule",
+    component: () => import("@/components/pages/pageschedule/PageSchedule.vue"),
+  },
 ];
 
 const router = new VueRouter({

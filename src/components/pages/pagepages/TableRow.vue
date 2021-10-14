@@ -5,7 +5,7 @@
     <td>{{ pageData.pageStatus ? "ВКЛ" : "ВЫКЛ" }}</td>
     <td class="d-flex">
       <a class="mr-3 text-dark" @click="editPage"><i class="fas fa-pen"></i></a>
-      <a class="text-dark" @click="deletePageCard"
+      <a class="text-dark" v-if="pageData.isRemovable" @click="deletePageCard"
         ><i class="fas fa-trash"></i
       ></a>
     </td>

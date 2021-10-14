@@ -28,6 +28,11 @@
           :titleProperty.sync="pageData.titles.pageName"
           v-if="pageData.pageName.isRequired"
         />
+        <Phones
+          :phones.sync="pageData.phones"
+          :titleProperty.sync="pageData.titles.phones"
+          v-if="pageData.phones.isRequired"
+        />
       </div>
       <div class="col-6">
         <DatePicker
@@ -70,6 +75,7 @@
 <script>
 import LangSwitcher from "../pagefilms/LangSwitcher";
 import FilmName from "../pagefilms/FilmName";
+import Phones from "./Phones";
 import FilmDescription from "../pagefilms/FilmDescription";
 import MainPicture from "../pagefilms/MainPicture";
 import PictureGallery from "../pagefilms/PictureGallery";
@@ -95,6 +101,7 @@ export default {
   components: {
     LangSwitcher,
     FilmName,
+    Phones,
     FilmDescription,
     MainPicture,
     PictureGallery,

@@ -46,6 +46,12 @@
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
+              <router-link to="/pageschedule">Расписание сеансов</router-link>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
               <router-link to="/pagecinemas">Кинотеатры</router-link>
             </a>
           </li>

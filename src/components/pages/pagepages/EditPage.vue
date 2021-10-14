@@ -28,6 +28,11 @@
           :titleProperty.sync="pageCard.titles.pageName"
           v-if="pageCard.pageName.isRequired"
         />
+        <Phones
+          :phones.sync="pageData.phones"
+          :titleProperty.sync="pageData.titles.phones"
+          v-if="pageData.phones.isRequired"
+        />
       </div>
       <div class="col-6">
         <DatePicker
@@ -62,6 +67,10 @@
       :titleProperty.sync="pageCard.titles.pageGallery"
       v-if="pageCard.pageGallery.isRequired"
     />
+    <Contacts
+      v-if="pageCard.contacts.isRequired"
+      :contacts.sync="pageCard.contacts"
+    />
     <SeoBlock :seoBlock.sync="pageCard.seoBlock" />
     <FooterButtons @saveFilm="savePageToDb" />
   </div>
@@ -70,9 +79,11 @@
 <script>
 import LangSwitcher from "../pagefilms/LangSwitcher";
 import FilmName from "../pagefilms/FilmName";
+import Phones from "./Phones";
 import FilmDescription from "../pagefilms/FilmDescription";
 import MainPicture from "../pagefilms/MainPicture";
 import PictureGallery from "../pagefilms/PictureGallery";
+import Contacts from "./Contacts";
 import SeoBlock from "../pagefilms/SeoBlock";
 import FooterButtons from "../pagefilms/FooterButtons";
 // Datepicker
@@ -95,9 +106,11 @@ export default {
   components: {
     LangSwitcher,
     FilmName,
+    Phones,
     FilmDescription,
     MainPicture,
     PictureGallery,
+    Contacts,
     SeoBlock,
     FooterButtons,
     DatePicker,
@@ -167,6 +180,25 @@ export default {
           });
       }
 
+      //uploading cinema logo to firebase storage
+      this.pageCard.contacts.contactCards.map(async (contact) => {
+        let blob = await fetch(contact.mainPicture.image, {
+          mode: "same-origin",
+        }).then((res) => {
+          return res.blob();
+        });
+
+        const storageRef = firebase
+          .storage()
+          .ref(`images/${Date.now()}${blob.size}.jpg`);
+
+        contact.mainPicture.image = await storageRef
+          .put(blob)
+          .then(async function (snapshot) {
+            return await snapshot.ref.getDownloadURL();
+          });
+      });
+      console.log(this.pageCard);
       setTimeout(() => {
         database.ref("pages/").set(this.pageCards);
         this.$router.push({ name: "Pagepages" });
