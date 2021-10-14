@@ -138,6 +138,12 @@ const routes = [
     name: "Pageschedule",
     component: () => import("@/components/pages/pageschedule/PageSchedule.vue"),
   },
+  {
+    path: "/addschedule/:id",
+    name: "Addschedule",
+    component: () => import("@/components/pages/pageschedule/AddSchedule.vue"),
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
