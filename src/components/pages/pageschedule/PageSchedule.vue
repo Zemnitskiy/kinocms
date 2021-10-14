@@ -4,6 +4,7 @@
     :scheduleItem="scheduleItem"
     :scheduleList="scheduleList"
     :filmsList="filmsList"
+    :cinemasList="cinemasList"
   />
 </template>
 
@@ -32,6 +33,7 @@ export default {
         priceVip: "",
       },
       filmsList: [],
+      cinemasList: [],
       loaded: false,
     };
   },
@@ -47,24 +49,27 @@ export default {
       }
     });
 
+    // get films title
     database.ref("films/filmcards/").on("value", async (snapshot) => {
-      if (snapshot.val() != null) {
-        // this.scheduleItem.film = await snapshot.val();
-
-        let list = await snapshot.val();
-        list.map((item) => {
-          this.filmsList.push(item.filmName);
-        });
-      }
+      let list = await snapshot.val();
+      list.map((item) => {
+        this.filmsList.push(item.filmName);
+      });
     });
 
+    // get films title
     database.ref("films/filmcardsfuture/").on("value", async (snapshot) => {
-      if (snapshot.val() != null) {
-        let list = await snapshot.val();
-        list.map((item) => {
-          this.filmsList.push(item.filmName);
-        });
-      }
+      let list = await snapshot.val();
+      list.map((item) => {
+        this.filmsList.push(item.filmName);
+      });
+    });
+
+    database.ref("cinemas/cinemacards/").on("value", async (snapshot) => {
+      let list = await snapshot.val();
+      list.map((item) => {
+        this.cinemasList.push(item.cinemaName);
+      });
     });
   },
 };

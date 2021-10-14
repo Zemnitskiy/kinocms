@@ -18,15 +18,19 @@
     </td>
     <td></td>
     <td>
-      <div class="form-group">
-        <select class="form-control">
-          <option v-for="film in filmsList" :key="film.id">
-            {{ film }}
-          </option>
-        </select>
-      </div>
+      <select class="form-control">
+        <option v-for="film in filmsList" :key="film.id">
+          {{ film }}
+        </option>
+      </select>
     </td>
-    <td></td>
+    <td>
+      <select class="form-control">
+        <option v-for="cinema in cinemasList" :key="cinema.id">
+          {{ cinema }}
+        </option>
+      </select>
+    </td>
     <td></td>
     <td></td>
     <td></td>
@@ -63,12 +67,17 @@ export default {
       type: Array,
       required: true,
     },
+    cinemas: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       scheduleItem: this.schedule,
       scheduleList: this.scheduleData,
       filmsList: this.films,
+      cinemasList: this.cinemas,
       // Datepicker config
       modelConfig: {
         type: "string",

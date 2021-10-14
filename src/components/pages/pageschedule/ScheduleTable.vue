@@ -27,6 +27,7 @@
                 :schedule="schedule"
                 :scheduleData="scheduleData"
                 :films="films"
+                :cinemas="cinemas"
               />
             </tbody>
           </table>
@@ -59,6 +60,10 @@ export default {
       type: Array,
       required: true,
     },
+    cinemasList: {
+      type: Array,
+      required: true,
+    },
   },
   components: {
     CreateScheduleButton,
@@ -69,6 +74,7 @@ export default {
     return {
       schedule: this.scheduleItem,
       films: this.filmsList,
+      cinemas: this.cinemasList,
     };
   },
   computed: {
