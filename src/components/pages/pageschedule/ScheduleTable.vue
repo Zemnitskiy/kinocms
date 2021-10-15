@@ -28,6 +28,7 @@
                 :scheduleData="scheduleData"
                 :films="films"
                 :cinemas="cinemas"
+                :cards="cards"
               />
             </tbody>
           </table>
@@ -64,6 +65,10 @@ export default {
       type: Array,
       required: true,
     },
+    cinemaCards: {
+      type: Array,
+      required: true,
+    },
   },
   components: {
     CreateScheduleButton,
@@ -73,15 +78,11 @@ export default {
   data() {
     return {
       schedule: this.scheduleItem,
+      scheduleData: this.scheduleList,
       films: this.filmsList,
       cinemas: this.cinemasList,
+      cards: this.cinemaCards,
     };
-  },
-  computed: {
-    // Проблема с обновлением свойства из props, сделал вычисляемым
-    scheduleData: function () {
-      return this.scheduleList;
-    },
   },
   methods: {
     addSchedule: function () {

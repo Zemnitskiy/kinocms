@@ -5,6 +5,7 @@
     :scheduleList="scheduleList"
     :filmsList="filmsList"
     :cinemasList="cinemasList"
+    :cinemaCards="cinemaCards"
   />
 </template>
 
@@ -26,7 +27,7 @@ export default {
         id: String(Date.now() * Math.floor(Math.random() + 1)),
         date: "20.09.2021",
         time: "20:00",
-        film: null,
+        film: "",
         cinema: "",
         hall: "",
         price: "",
@@ -34,6 +35,7 @@ export default {
       },
       filmsList: [],
       cinemasList: [],
+      cinemaCards: [],
       loaded: false,
     };
   },
@@ -65,9 +67,10 @@ export default {
       });
     });
 
+    // get films title
     database.ref("cinemas/cinemacards/").on("value", async (snapshot) => {
-      let list = await snapshot.val();
-      list.map((item) => {
+      this.cinemaCards = await snapshot.val();
+      this.cinemaCards.map((item) => {
         this.cinemasList.push(item.cinemaName);
       });
     });

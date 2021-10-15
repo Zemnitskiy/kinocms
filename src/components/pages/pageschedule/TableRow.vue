@@ -25,13 +25,19 @@
       </select>
     </td>
     <td>
-      <select class="form-control">
+      <select class="form-control" v-model="pickedCinema">
         <option v-for="cinema in cinemasList" :key="cinema.id">
           {{ cinema }}
         </option>
       </select>
     </td>
-    <td></td>
+    <td>
+      <select class="form-control" v-model="pickedHall">
+        <option v-for="(hall, index) in hallsList" :key="index">
+          {{ hall }}
+        </option>
+      </select>
+    </td>
     <td></td>
     <td></td>
     <td align="center">
@@ -71,6 +77,10 @@ export default {
       type: Array,
       required: true,
     },
+    cards: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
@@ -78,6 +88,7 @@ export default {
       scheduleList: this.scheduleData,
       filmsList: this.films,
       cinemasList: this.cinemas,
+      cardsList: this.cards,
       // Datepicker config
       modelConfig: {
         type: "string",
@@ -94,12 +105,30 @@ export default {
         this.scheduleItem.date = newDate;
       },
     },
-    getFilmsList: function () {
-      let filmsList = [];
-      this.scheduleItem.film.map((card) => {
-        filmsList.push(card.filmName);
+    pickedCinema: {
+      get: function () {
+        return this.schedule.cinema;
+      },
+      set: function (newValue) {
+        this.scheduleItem.cinema = newValue;
+      },
+    },
+    pickedHall: {
+      get: function () {
+        return this.schedule.hall;
+      },
+      set: function (newValue) {
+        this.scheduleItem.hall = newValue;
+      },
+    },
+    hallsList: function () {
+      let list = [];
+      this.cardsList.map((card) => {
+        if (card.cinemaName === this.pickedCinema) {
+          card.hallCards.map((hall) => list.push(hall.hallNumber));
+        }
       });
-      return filmsList;
+      return list;
     },
   },
   methods: {
