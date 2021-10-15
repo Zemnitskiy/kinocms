@@ -16,7 +16,9 @@
         </template>
       </DatePicker>
     </td>
-    <td></td>
+    <td>
+      <input class="form-control" type="time" v-model="time" />
+    </td>
     <td>
       <select class="form-control" v-model="pickedFilm">
         <option v-for="film in filmsList" :key="film.id">
@@ -40,7 +42,7 @@
     </td>
     <td>
       <div class="form-group">
-        <input type="number" class="form-control" v-model="price" />
+        <input type="number" class="form-control" size="15" v-model="price" />
       </div>
     </td>
     <td>
@@ -160,6 +162,14 @@ export default {
       },
       set: function (newValue) {
         this.scheduleItem.priceVip = newValue;
+      },
+    },
+    time: {
+      get: function () {
+        return this.schedule.time;
+      },
+      set: function (newValue) {
+        this.scheduleItem.time = newValue;
       },
     },
   },
