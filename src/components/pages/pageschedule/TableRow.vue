@@ -9,7 +9,7 @@
       >
         <template>
           <input
-            class="bg-white border px-2 py-1 rounded"
+            class="bg-white border px-2 py-1 rounded td-width"
             :value="inputValue"
             v-on="inputEvents"
           />
@@ -42,12 +42,17 @@
     </td>
     <td>
       <div class="form-group">
-        <input type="number" class="form-control" size="15" v-model="price" />
+        <input
+          type="number"
+          class="form-control td-width"
+          size="15"
+          v-model="price"
+        />
       </div>
     </td>
     <td>
       <div class="form-group">
-        <input type="number" class="form-control" v-model="priceVip" />
+        <input type="number" class="form-control td-width" v-model="priceVip" />
       </div>
     </td>
     <td align="center">
@@ -61,9 +66,6 @@
 <script>
 // Datepicker
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
-import firebase from "firebase";
-
-const database = firebase.database();
 
 export default {
   components: {
@@ -175,12 +177,17 @@ export default {
   },
   methods: {
     deleteScheduleRow: function () {
-      this.scheduleList = this.scheduleList.filter(
-        (sch) => sch.id !== this.scheduleItem.id
-      );
-
-      database.ref("pageschedule/").set(this.scheduleList);
+      this.$emit("deleteScheduleRow", this.scheduleItem);
+      // this.scheduleList = this.scheduleList.filter(
+      //   (sch) => sch.id !== this.scheduleItem.id
+      // );
     },
   },
 };
 </script>
+
+<style scoped>
+.td-width {
+  width: 100px;
+}
+</style>

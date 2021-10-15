@@ -4,9 +4,6 @@
       <button class="btn btn-block btn-default mr-4" @click="saveFilm">
         Сохранить
       </button>
-      <button class="btn btn-block btn-default mt-0" @clic="loadDeafaults">
-        Вернуть базовую версию
-      </button>
     </div>
   </div>
 </template>
@@ -20,9 +17,6 @@ export default {
   methods: {
     saveFilm: function () {
       this.$emit("saveFilm");
-    },
-    loadDeafaults: function () {
-      this.$emit("loadDefaults");
     },
   },
 };

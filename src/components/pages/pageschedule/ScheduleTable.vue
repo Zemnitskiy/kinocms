@@ -29,10 +29,12 @@
                 :films="films"
                 :cinemas="cinemas"
                 :cards="cards"
+                @deleteScheduleRow="deleteScheduleRow"
               />
             </tbody>
           </table>
           <CreateScheduleButton @addSchedule="addSchedule" />
+          <FooterButtons @saveFilm="saveSchedule" />
         </div>
         <!-- /.card-body -->
         <div class="card-footer"></div>
@@ -46,6 +48,11 @@
 <script>
 import CreateScheduleButton from "./CreateScheduleButton";
 import TableRow from "./TableRow";
+import FooterButtons from "../pagefilms/FooterButtons";
+
+import firebase from "firebase";
+
+const database = firebase.database();
 
 export default {
   props: {
@@ -73,16 +80,27 @@ export default {
   components: {
     CreateScheduleButton,
     TableRow,
+    FooterButtons,
   },
   name: "ScheduleTable",
   data() {
     return {
       schedule: this.scheduleItem,
-      scheduleData: this.scheduleList,
       films: this.filmsList,
       cinemas: this.cinemasList,
       cards: this.cinemaCards,
+      data: {},
     };
+  },
+  computed: {
+    scheduleData: {
+      get: function () {
+        return this.scheduleList;
+      },
+      set: function () {
+        return this.data;
+      },
+    },
   },
   methods: {
     addSchedule: function () {
@@ -97,6 +115,13 @@ export default {
         priceVip: "",
       };
       return this.scheduleData.push(currentSchedule);
+    },
+    deleteScheduleRow: function (payload) {
+      let data = this.scheduleData.filter((sch) => sch.id !== payload.id);
+      database.ref("pageschedule/").set(data);
+    },
+    saveSchedule: function () {
+      return database.ref("pageschedule/").set(this.scheduleData);
     },
   },
 };
