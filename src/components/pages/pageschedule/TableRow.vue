@@ -18,7 +18,7 @@
     </td>
     <td></td>
     <td>
-      <select class="form-control">
+      <select class="form-control" v-model="pickedFilm">
         <option v-for="film in filmsList" :key="film.id">
           {{ film }}
         </option>
@@ -129,6 +129,14 @@ export default {
         }
       });
       return list;
+    },
+    pickedFilm: {
+      get: function () {
+        return this.schedule.film;
+      },
+      set: function (newValue) {
+        this.scheduleItem.film = newValue;
+      },
     },
   },
   methods: {
