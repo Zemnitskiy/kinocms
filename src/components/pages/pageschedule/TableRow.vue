@@ -38,8 +38,16 @@
         </option>
       </select>
     </td>
-    <td></td>
-    <td></td>
+    <td>
+      <div class="form-group">
+        <input type="number" class="form-control" v-model="price" />
+      </div>
+    </td>
+    <td>
+      <div class="form-group">
+        <input type="number" class="form-control" v-model="priceVip" />
+      </div>
+    </td>
     <td align="center">
       <a class="text-dark" @click="deleteScheduleRow"
         ><i class="fas fa-trash"></i
@@ -136,6 +144,22 @@ export default {
       },
       set: function (newValue) {
         this.scheduleItem.film = newValue;
+      },
+    },
+    price: {
+      get: function () {
+        return this.schedule.price;
+      },
+      set: function (newValue) {
+        this.scheduleItem.price = newValue;
+      },
+    },
+    priceVip: {
+      get: function () {
+        return this.schedule.priceVip;
+      },
+      set: function (newValue) {
+        this.scheduleItem.priceVip = newValue;
       },
     },
   },
