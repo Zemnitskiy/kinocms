@@ -67,7 +67,7 @@ export default {
       });
     });
 
-    // get films title
+    // get cinemas title
     database.ref("cinemas/cinemacards/").on("value", async (snapshot) => {
       this.cinemaCards = await snapshot.val();
       this.cinemaCards.map((item) => {

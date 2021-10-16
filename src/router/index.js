@@ -107,7 +107,13 @@ const routes = [
   {
     path: "/pageusers",
     name: "PageUsers",
-    component: () => import("@/components/pages/PageUsers.vue"),
+    component: () => import("@/components/pages/pageusers/PageUsers.vue"),
+  },
+  {
+    path: "/edituser/:id",
+    name: "EditFilm",
+    component: () => import("@/components/pages/pageusers/EditUser.vue"),
+    props: true,
   },
   {
     path: "/addfilm/:id",
@@ -137,12 +143,6 @@ const routes = [
     path: "/pageschedule",
     name: "Pageschedule",
     component: () => import("@/components/pages/pageschedule/PageSchedule.vue"),
-  },
-  {
-    path: "/addschedule/:id",
-    name: "Addschedule",
-    component: () => import("@/components/pages/pageschedule/AddSchedule.vue"),
-    props: true,
   },
 ];
 

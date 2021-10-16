@@ -89,17 +89,11 @@ export default {
       films: this.filmsList,
       cinemas: this.cinemasList,
       cards: this.cinemaCards,
-      data: {},
     };
   },
   computed: {
-    scheduleData: {
-      get: function () {
-        return this.scheduleList;
-      },
-      set: function () {
-        return this.data;
-      },
+    scheduleData: function () {
+      return this.scheduleList;
     },
   },
   methods: {
