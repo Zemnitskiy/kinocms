@@ -29,11 +29,12 @@
             </thead>
             <tbody>
               <TableRow
-                v-for="user in usersData"
-                :key="user.id"
+                v-for="userData in usersData"
+                :key="userData.id"
                 :userData="userData"
                 :usersData="usersData"
                 @editUser="editUser"
+                @deleteUser="deleteUser"
               />
             </tbody>
           </table>
@@ -110,9 +111,7 @@ export default {
         language: "Eng",
         gender: "male",
       };
-      this.usersData.push(currentUser);
-      console.log(this.usersData);
-      return this.usersData;
+      return this.usersData.push(currentUser);
     },
     deleteUser: function (payload) {
       let data = this.usersData.filter((user) => user.id !== payload.id);

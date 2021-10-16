@@ -55,32 +55,6 @@ export default {
       },
     };
   },
-  computed: {
-    dateRegister: {
-      get: function () {
-        return this.userData.dateRegister;
-      },
-      set: function (newDate) {
-        this.user.dateRegister = newDate;
-      },
-    },
-    dateBorn: {
-      get: function () {
-        return this.userData.dateBorn;
-      },
-      set: function (newDate) {
-        this.user.dateBorn = newDate;
-      },
-    },
-    email: {
-      get: function () {
-        return this.userData.email;
-      },
-      set: function (newValue) {
-        this.user.email = newValue;
-      },
-    },
-  },
   methods: {
     deleteUser: function () {
       this.$emit("deleteUser", this.userData);
