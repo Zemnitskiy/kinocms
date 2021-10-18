@@ -89,6 +89,7 @@
                     class="form-control"
                     id="passwordProfile"
                     placeholder="Пароль"
+                    v-model="password"
                   />
                 </div>
               </div>
@@ -167,6 +168,7 @@
                     class="form-control"
                     id="phoneProfile"
                     placeholder="+380123456789"
+                    v-model="phone"
                   />
                 </div>
               </div>
@@ -326,12 +328,12 @@ export default {
         this.userData.password = newValue;
       },
     },
-    confirmPassword: {
+    passwordConfirm: {
       get: function () {
-        return this.user.confirmPassword;
+        return this.user.passwordConfirm;
       },
       set: function (newValue) {
-        this.userData.confirmPassword = newValue;
+        this.userData.passwordConfirm = newValue;
       },
     },
     cardNumber: {
@@ -364,6 +366,14 @@ export default {
       },
       set: function (newValue) {
         this.userData.city = newValue;
+      },
+    },
+    phone: {
+      get: function () {
+        return this.user.phone;
+      },
+      set: function (newValue) {
+        this.userData.phone = newValue;
       },
     },
   },

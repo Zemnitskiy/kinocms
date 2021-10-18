@@ -3,7 +3,18 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header d-flex justify-content-center">
-          <h3 class="card-title text-bold">Пользователи</h3>
+          <div class="d-flex flex-row">
+            <h3 class="card-title text-bold" style="line-height: 38px">
+              Пользователи
+            </h3>
+            <input
+              class="form-control ml-5"
+              type="search"
+              placeholder="Поиск"
+              v-model="search"
+              @input="searchUser"
+            />
+          </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body d-flex flex-column">
@@ -76,13 +87,17 @@ export default {
   data() {
     return {
       userData: this.user,
+      usersData: this.usersList,
+      search: null,
     };
   },
-  computed: {
-    usersData: function () {
-      return this.usersList;
-    },
-  },
+  // computed: {
+  //   usersData: {
+  //     get: function () {
+  //       return this.usersList;
+  //     },
+  //   },
+  // },
   methods: {
     editUser: function () {
       this.$router.push({
@@ -117,6 +132,15 @@ export default {
     deleteUser: function (payload) {
       let data = this.usersData.filter((user) => user.id !== payload.id);
       database.ref("pageusers/").set(data);
+    },
+    searchUser: function () {
+      if (this.search !== "") {
+        this.usersData = this.usersList.filter((obj) =>
+          Object.values(obj).some((val) => val.includes(this.search))
+        );
+      } else {
+        this.usersData = this.usersList;
+      }
     },
   },
 };
