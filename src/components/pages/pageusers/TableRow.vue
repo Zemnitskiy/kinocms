@@ -14,7 +14,7 @@
       {{ user.phone }}
     </td>
     <td>
-      {{ user.fullName }}
+      {{ `${user.name} ${user.sourname}` }}
     </td>
     <td>
       {{ user.nickName }}
@@ -23,7 +23,7 @@
       {{ user.city }}
     </td>
     <td align="center">
-      <a class="mr-3 text-dark"><i class="fas fa-pen"></i></a>
+      <a class="mr-3 text-dark" @click="editUser"><i class="fas fa-pen"></i></a>
       <a class="mr-3 text-dark" @click="deleteUser"
         ><i class="fas fa-trash"></i
       ></a>
@@ -58,6 +58,16 @@ export default {
   methods: {
     deleteUser: function () {
       this.$emit("deleteUser", this.userData);
+    },
+    editUser: function () {
+      return this.$router.push({
+        name: "EditUser",
+        params: {
+          id: this.user.id,
+          user: this.user,
+          userList: this.userList,
+        },
+      });
     },
   },
 };

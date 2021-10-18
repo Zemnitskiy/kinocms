@@ -111,7 +111,7 @@ const routes = [
   },
   {
     path: "/edituser/:id",
-    name: "EditFilm",
+    name: "EditUser",
     component: () => import("@/components/pages/pageusers/EditUser.vue"),
     props: true,
   },
