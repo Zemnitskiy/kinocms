@@ -21,6 +21,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th></th>
                 <th class="text-center">ID</th>
                 <th class="text-center">
                   Дата <br />
@@ -35,7 +36,6 @@
                 <th class="text-center">ФИО</th>
                 <th class="text-center">Псевдоним</th>
                 <th class="text-center">Город</th>
-                <th class="text-center"></th>
               </tr>
             </thead>
             <tbody>
@@ -44,12 +44,16 @@
                 :key="userData.id"
                 :userData="userData"
                 :usersData="usersData"
-                @editUser="editUser"
-                @deleteUser="deleteUser"
               />
             </tbody>
           </table>
-          <CreateUserButton @addUser="addUser" />
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <button class="btn btn-default mt-3" @click="sendChoosen">
+                Отправить выбранные
+              </button>
+            </div>
+          </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer"></div>
@@ -61,12 +65,7 @@
 </template>
 
 <script>
-import CreateUserButton from "./CreateUserButton";
 import TableRow from "./TableRow";
-
-import firebase from "firebase";
-
-const database = firebase.database();
 
 export default {
   props: {
@@ -80,7 +79,6 @@ export default {
     },
   },
   components: {
-    CreateUserButton,
     TableRow,
   },
   name: "UserTable",
@@ -89,51 +87,10 @@ export default {
       userData: this.user,
       usersData: this.usersList,
       search: null,
+      listSms: [],
     };
   },
-  // computed: {
-  //   usersData: {
-  //     get: function () {
-  //       return this.usersList;
-  //     },
-  //   },
-  // },
   methods: {
-    editUser: function () {
-      this.$router.push({
-        name: "EditUser",
-        params: {
-          id: this.userData.id,
-          user: this.userData,
-          userList: this.usersData,
-        },
-      });
-    },
-    addUser: function () {
-      let currentUser = {
-        id: String(Date.now() * Math.floor(Math.random() + 1)),
-        dateRegister: "20.09.2021",
-        dateBorn: "20.09.2021",
-        email: "user@user.com",
-        phone: "1234567890",
-        name: "John",
-        sourname: "Smith",
-        nickName: "Just Jonh",
-        city: "Киев",
-        address: "st. Elm",
-        password: "123456",
-        passwordConfirm: "123456",
-        cardNumber: "1111 2222 3333 4444",
-        language: "Украинский",
-        gender: "Мужской",
-        picked: false,
-      };
-      return this.usersData.push(currentUser);
-    },
-    deleteUser: function (payload) {
-      this.usersData = this.usersData.filter((user) => user.id !== payload.id);
-      database.ref("pageusers/").set(this.usersData);
-    },
     searchUser: function () {
       if (this.search !== "") {
         this.usersData = this.usersList.filter((obj) =>
@@ -144,6 +101,17 @@ export default {
       } else {
         this.usersData = this.usersList;
       }
+    },
+    sendChoosen: function () {
+      this.usersData = this.usersData.filter((user) => user.picked === true);
+      this.listSms = this.usersData;
+      console.log("Choosen persons = ", this.listSms);
+      this.$router.push({
+        name: "PageNewsletter",
+        params: {
+          smsList: this.listSms,
+        },
+      });
     },
   },
 };

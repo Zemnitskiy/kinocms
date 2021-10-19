@@ -1,21 +1,27 @@
 <template>
-  <UsersTable v-if="loaded" :user="user" :usersList="usersList" />
+  <UsersTable :user="user" :usersList="usersList" />
 </template>
 
 <script>
 import UsersTable from "./UsersTable";
-import firebase from "firebase";
+// import firebase from "firebase";
 
-const database = firebase.database();
+// const database = firebase.database();
 
 export default {
+  props: {
+    users: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {
     UsersTable,
   },
-  name: "PageUsers",
+  name: "ChooseUsers",
   data() {
     return {
-      usersList: [],
+      usersList: this.users,
       user: {
         id: String(Date.now() * Math.floor(Math.random() + 1)),
         dateRegister: "20.09.2021",
@@ -34,20 +40,8 @@ export default {
         gender: "Мужской",
         picked: false,
       },
-      loaded: false,
     };
   },
   methods: {},
-  mounted() {
-    database.ref("pageusers/").on("value", async (snapshot) => {
-      if (snapshot.val() != null) {
-        this.usersList = await snapshot.val();
-        this.loaded = true;
-      } else {
-        this.usersList = [];
-        this.loaded = true;
-      }
-    });
-  },
 };
 </script>

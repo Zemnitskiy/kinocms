@@ -67,8 +67,16 @@ const routes = [
   },
   {
     path: "/pagenewsletter",
-    name: "Pagenewsletter",
-    component: () => import("@/components/pages/PageNewsletter.vue"),
+    name: "PageNewsletter",
+    component: () =>
+      import("@/components/pages/pagenewsletter/PageNewsletter.vue"),
+  },
+  {
+    path: "/chooseusers",
+    name: "ChooseUsers",
+    component: () =>
+      import("@/components/pages/pagenewsletter/ChooseUsers.vue"),
+    props: true,
   },
   {
     path: "/pagepages",
