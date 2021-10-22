@@ -91,13 +91,6 @@ export default {
       search: null,
     };
   },
-  // computed: {
-  //   usersData: {
-  //     get: function () {
-  //       return this.usersList;
-  //     },
-  //   },
-  // },
   methods: {
     editUser: function () {
       this.$router.push({

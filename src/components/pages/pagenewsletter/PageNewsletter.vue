@@ -1,104 +1,6 @@
 <template>
   <div class="row pt-4 pl-3 pr-3 mr-0 ml-0">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header d-flex justify-content-center">
-          <h3 class="card-title text-bold">SMS</h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body d-flex flex-column">
-          <div class="row">
-            <div class="col-12">
-              <div
-                class="
-                  form-group
-                  d-flex
-                  align-items-center
-                  border-custom
-                  height-custom
-                "
-              >
-                <label class="form-check-label col-3 text-bold"
-                  >Отправить пользователям:</label
-                >
-                <div class="form-check col-3">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="userListSwitcherSms"
-                    value="Все пользователи"
-                    v-model="pickedUsersSms"
-                  />
-                  <label class="form-check-label">Все пользователи</label>
-                </div>
-                <div class="form-check col-3">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="userListSwitcherSms"
-                    value="Выборочно"
-                    v-model="pickedUsersSms"
-                  />
-                  <label class="form-check-label">Выборочно</label>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-default"
-                  @click="chooseUsers"
-                  :disabled="isDisabledSms"
-                >
-                  Выбрать пользователей
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <div class="row d-flex justify-content-between pr-2 pl-2">
-                  <label>Текст SMS</label>
-                  <div>
-                    <span class="text-bold mr-2">Символов:</span
-                    >{{ symbolCounter }}
-                  </div>
-                </div>
-                <textarea
-                  class="form-control"
-                  rows="3"
-                  placeholder="Введите текст"
-                  v-model="textMessage"
-                  @input="getSymbolCount"
-                ></textarea>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="mt-4">
-                <span class="mr-2">Кол-во SMS:</span>{{ smsCounter }}
-              </div>
-              <div>
-                <span class="mr-2">Рассылка выполнена на:</span
-                >{{ smsProgress }}%
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 d-flex justify-content-center">
-              <button
-                type="button"
-                class="btn btn-default mt-3 mb-3"
-                @click="sendSms"
-              >
-                Отправить
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer"></div>
-        <!-- /.card-footer -->
-      </div>
-      <!-- /.card -->
-    </div>
+    <Sms :smsNewsletter="smsNewsletter" :smsList="smsList" />
 
     <!-- Email newsletter -->
     <div class="col-md-12">
@@ -170,8 +72,16 @@
                   </div>
                 </div>
               </div>
-              <p><span>Загружен файл: </span>{{ newsletterTemplateName }}</p>
-              <p><span>Шаблон используемый в текущей рассылке:</span>{{}}</p>
+              <p>
+                <span>Загружен файл: </span
+                ><span class="text-bold">{{ newsletterTemplateName }}</span>
+              </p>
+              <p>
+                <span>Шаблон используемый в текущей рассылке: </span><br /><span
+                  class="text-bold"
+                  >{{ choosedTemplate }}</span
+                >
+              </p>
               <div class="row">
                 <div class="col-5">Кол-во писем: {{ emailCounter }}</div>
                 <div class="col-7">
@@ -189,22 +99,29 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <div class="form-check row d-flex flex-direction-row">
+                  <div
+                    class="form-check row d-flex mt-2 mb-2"
+                    v-for="template in templates"
+                    :key="template.id"
+                  >
                     <div class="col-1">
                       <input
                         class="form-check-input"
                         type="radio"
                         name="radio1"
-                        checked
+                        v-model="choosedTemplate"
+                        :value="template.name"
                       />
                     </div>
                     <div class="col-10">
                       <label class="form-check-label">{{
-                        newsletterTemplateName
+                        template.name
                       }}</label>
                     </div>
                     <div class="col-1">
-                      <a class="text-dark"><i class="fas fa-trash"></i></a>
+                      <a class="text-dark" @click="deleteTemplate"
+                        ><i class="fas fa-trash"></i
+                      ></a>
                     </div>
                   </div>
                 </div>
@@ -235,30 +152,34 @@
 </template>
 
 <script>
+import Sms from "./Sms";
 import firebase from "firebase";
 
 const database = firebase.database();
 
 export default {
+  components: {
+    Sms,
+  },
   name: "PageNewsletter",
   data() {
     return {
-      pickedUsersSms: "Выборочно",
-      textMessage: "",
-      symbolCounter: 0,
-      userList: [],
-      smsCounter: 0,
-      smsProgress: 0,
+      smsNewsletter: {
+        pickedUsersSms: "Все пользователи",
+        textMessage: "",
+        symbolCounter: 0,
+        userList: [],
+        smsCounter: 0,
+        smsProgress: 0,
+      },
+      emailNewsletter: {},
 
       newsletterTemplateName: "",
       pickedUsersEmail: "Выборочно",
       emailCounter: 0,
       emailProgress: 0,
-      template: {
-        id: String(Date.now() * Math.floor(Math.random() + 1)),
-        name: "",
-      },
       templates: [],
+      choosedTemplate: null,
     };
   },
   methods: {
@@ -292,15 +213,28 @@ export default {
     uploadFile: function (event) {
       const file = event.target.files[0];
       this.newsletterTemplateName = file.name;
+
+      let currentTemplate = {
+        id: String(Date.now() * Math.floor(Math.random() + 1)),
+        name: file.name,
+      };
+
+      this.templates.push(currentTemplate);
+    },
+    deleteTemplate: function (template) {
+      console.log("templ = ", template);
+      this.templates = this.templates.filter(
+        (templ) => templ.id !== template.id
+      );
     },
   },
   computed: {
     smsList: {
       get: function () {
-        if (this.pickedUsersSms === "Выборочно") {
-          return this.$route.params.smsList;
+        if (this.smsNewsletter.pickedUsersSms === "Выборочно") {
+          return this.$route.params.smsList || [];
         } else {
-          return this.userList;
+          return this.smsNewsletter.userList;
         }
       },
     },
@@ -314,9 +248,9 @@ export default {
   mounted() {
     database.ref("pageusers/").on("value", async (snapshot) => {
       if (snapshot.val() != null) {
-        this.userList = await snapshot.val();
+        this.smsNewsletter.userList = await snapshot.val();
       } else {
-        this.userList = [];
+        this.smsNewsletter.userList = [];
       }
     });
   },

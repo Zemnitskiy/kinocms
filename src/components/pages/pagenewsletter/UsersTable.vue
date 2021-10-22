@@ -105,7 +105,7 @@ export default {
     sendChoosen: function () {
       this.usersData = this.usersData.filter((user) => user.picked === true);
       this.listSms = this.usersData;
-      console.log("Choosen persons = ", this.listSms);
+      console.log("Choosed persons = ", this.listSms);
       this.$router.push({
         name: "PageNewsletter",
         params: {

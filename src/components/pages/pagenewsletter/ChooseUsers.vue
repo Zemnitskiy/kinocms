@@ -4,9 +4,6 @@
 
 <script>
 import UsersTable from "./UsersTable";
-// import firebase from "firebase";
-
-// const database = firebase.database();
 
 export default {
   props: {
@@ -42,6 +39,5 @@ export default {
       },
     };
   },
-  methods: {},
 };
 </script>
