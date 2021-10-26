@@ -143,7 +143,7 @@ export default {
           }, 2000);
         }
       } else {
-        alert("Type text for newslertter!");
+        alert("Type text for newsletter!");
       }
     },
   },
